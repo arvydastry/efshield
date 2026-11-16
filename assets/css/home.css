@@ -1,0 +1,239 @@
+/* EFshield demo · pirmas puslapis */
+
+/* ---------- HERO ---------- */
+.hero{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);min-height:min(calc(100dvh - var(--top-h) - var(--head-h)),760px)}
+.hero__copy{display:flex;flex-direction:column;justify-content:center;gap:clamp(18px,2.4vh,28px);padding:clamp(36px,6vh,72px) clamp(24px,3vw,48px) clamp(36px,6vh,72px) max(var(--gut),calc((100vw - var(--wrap)) / 2))}
+.hero__title{font-size:clamp(2.3rem,4.25vw,4rem);font-weight:660;font-stretch:122%;letter-spacing:-.034em;line-height:1}
+.hero__lead{max-width:42ch;font-size:clamp(1.05rem,1.25vw,1.2rem);color:var(--text)}
+.hero__cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:4px}
+/* abi prekės su kainomis jau pirmame ekrane */
+.hero__offer{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 clamp(16px,2.4vw,36px);margin-top:clamp(10px,2vh,22px);max-width:560px;border-top:1px solid var(--line)}
+.hero__offer a{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);color:var(--ink);transition:border-color .3s var(--ease)}
+.hero__offer span{grid-column:1;font-weight:560;line-height:1.25}
+.hero__offer strong{grid-column:1;font-size:1.3rem;font-stretch:114%;letter-spacing:-.01em;line-height:1.1}
+.hero__offer .ico{grid-column:2;grid-row:1 / span 2;width:22px;height:22px;transition:transform .5s var(--ease)}
+.hero__offer a:hover{border-bottom-color:var(--ink)}
+.hero__offer a:hover .ico{transform:translateX(6px)}
+.hero__stage{position:relative;overflow:hidden;background:var(--ink);min-height:440px}
+/* viršuje paliekama atsarga lėtesniam slinkimui (paralaksui); kuo ji mažesnė, tuo daugiau nuotraukos telpa į plotį */
+.hero__photo{position:absolute;inset:-5% 0 0;container-type:size;will-change:transform}
+/* „plokštė“ = visa nuotrauka cover režimu; bangų SVG guli tiksliai ant jos, todėl lankai visada prasideda ties antenomis */
+.hero__plate{--w:max(100cqw,150.04cqh);position:absolute;top:50%;left:calc((100cqw - var(--w)) * .25);width:var(--w);aspect-ratio:2048/1365;translate:0 -50%}
+.hero__plate img,.hero__waves{position:absolute;inset:0;width:100%;height:100%}
+.hero__plate img{object-fit:cover}
+.hero__waves{pointer-events:none;overflow:visible}
+@supports not (width:1cqw){
+  .hero__plate{inset:0;width:auto;aspect-ratio:auto;translate:none}
+  .hero__plate img{object-position:20% 50%}
+  .hero__waves{display:none}
+}
+
+/* bangos: oranžinė = bangos; už skydo jų nebėra */
+.wv path{fill:none;stroke:var(--wave);stroke-width:2.25;vector-effect:non-scaling-stroke}
+.wv--out path{transform-box:view-box;transform-origin:416px 816px;opacity:0;animation:wave-out 5.4s linear infinite;animation-delay:calc(var(--i) * -.9s)}
+@keyframes wave-out{0%{transform:scale(.08);opacity:0}7%{opacity:1}55%{opacity:.7}100%{transform:scale(1);opacity:0}}
+.wv--in path{stroke-dasharray:5 8;opacity:.85;animation:wave-dash 1.1s linear infinite}
+@keyframes wave-dash{to{stroke-dashoffset:-13}}
+.is-static .wv--out path{animation:none;opacity:calc(1 - var(--i) * .15);transform:scale(calc((var(--i) + 1) / 6))}
+.is-static .wv--in path{animation:none}
+
+/* judesys įkeliant puslapį (be scenarijų): scena atsidengia iš dešinės, antraštės žodžiai iškyla */
+.js:not(.is-static) .hero__stage{clip-path:inset(0 0 0 100%);animation:stage-in 1.3s var(--ease) .15s forwards}
+@keyframes stage-in{to{clip-path:inset(0 0 0 0)}}
+.js:not(.is-static) .hero__plate{scale:1.12;animation:photo-in 2s var(--ease) .15s forwards}
+@keyframes photo-in{to{scale:1}}
+.js:not(.is-static) .hero__title .ln > span{transform:none;transition:none;animation:word-in 1s var(--ease) both;animation-delay:calc(.1s + var(--l) * 60ms)}
+@keyframes word-in{from{transform:translateY(125%)}to{transform:none}}
+.js:not(.is-static) .hero__lead,.js:not(.is-static) .hero__cta,.js:not(.is-static) .hero__offer{opacity:0;translate:0 18px;animation:rise .9s var(--ease) forwards}
+.js:not(.is-static) .hero__lead{animation-delay:.5s}
+.js:not(.is-static) .hero__cta{animation-delay:.62s}
+.js:not(.is-static) .hero__offer{animation-delay:.74s}
+@keyframes rise{to{opacity:1;translate:0 0}}
+
+/* ---------- FAKTŲ JUOSTA ---------- */
+.marquee{overflow:hidden;border-bottom:1px solid var(--line);padding:clamp(16px,2vw,26px) 0}
+.marquee__track{display:flex;width:max-content;will-change:transform}
+.marquee__row{display:flex;align-items:center;flex:none}
+.marquee__row span{font-size:clamp(1.25rem,2.3vw,2.1rem);font-weight:620;font-stretch:125%;letter-spacing:-.02em;color:var(--ink);white-space:nowrap;line-height:1.2}
+.marquee__sep{width:clamp(18px,1.9vw,28px);height:clamp(18px,1.9vw,28px);margin:0 clamp(20px,2.6vw,44px);color:var(--ink);flex:none;animation:spin 14s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.is-static .marquee__track,.no-js .marquee__track{width:auto;flex-wrap:wrap}
+.is-static .marquee__row,.no-js .marquee__row{flex:0 1 100%;min-width:0;flex-wrap:wrap;justify-content:center;row-gap:8px;padding-inline:var(--gut)}
+.is-static .marquee__row > :last-child,.no-js .marquee__row > :last-child{display:none}
+.is-static .marquee__row + .marquee__row,.no-js .marquee__row + .marquee__row{display:none}
+
+/* ---------- PRODUKTAI ---------- */
+.shop{padding:var(--sec) 0}
+.shop__grid{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(20px,2.6vw,40px);align-items:start}
+.ptile--telefono{margin-top:clamp(24px,6vw,96px)}
+.ptile__stage{position:relative;display:block;overflow:hidden;background:var(--mist);perspective:1100px;transition:background-color .6s var(--ease)}
+.ptile--wifi .ptile__stage{aspect-ratio:1/.92}
+.ptile--telefono .ptile__stage{aspect-ratio:1/1.08}
+.ptile__img{position:absolute;inset:11% 12% 11%;width:76%;height:78%;object-fit:contain;filter:drop-shadow(0 22px 20px rgba(11,12,14,.2));transition:opacity .55s var(--ease),scale .8s var(--ease);will-change:transform}
+.ptile__img--baltas{opacity:0}
+.ptile[data-color="baltas"] .ptile__stage,.no-js .ptile:has(input[value="baltas"]:checked) .ptile__stage{background:var(--ink)}
+.ptile[data-color="baltas"] .ptile__img--juodas,.no-js .ptile:has(input[value="baltas"]:checked) .ptile__img--juodas{opacity:0}
+.ptile[data-color="baltas"] .ptile__img--baltas,.no-js .ptile:has(input[value="baltas"]:checked) .ptile__img--baltas{opacity:1}
+.ptile__stage:hover .ptile__img{scale:1.035}
+.ptile__waves{position:absolute;left:50%;top:52%;width:190%;aspect-ratio:1;translate:-50% -50%;clip-path:inset(0 54% 0 0);opacity:0;transition:opacity .6s var(--ease);pointer-events:none}
+.ptile__waves circle{fill:none;stroke:var(--wave);stroke-width:1.5;vector-effect:non-scaling-stroke;transform-box:fill-box;transform-origin:center}
+.ptile__stage:hover .ptile__waves,.ptile__stage:focus-visible .ptile__waves{opacity:1}
+.ptile__stage:hover .ptile__waves circle{animation:tile-wave 2.6s var(--ease-io) infinite}
+.ptile__waves circle:nth-child(2){animation-delay:.18s}
+.ptile__waves circle:nth-child(3){animation-delay:.36s}
+.ptile__waves circle:nth-child(4){animation-delay:.54s}
+@keyframes tile-wave{0%,100%{transform:scale(.94);opacity:.35}50%{transform:scale(1.04);opacity:1}}
+.is-static .ptile__waves circle{animation:none!important}
+.ptile__info{padding-top:20px;display:grid;gap:6px}
+.ptile__name{display:flex;align-items:baseline;justify-content:space-between;gap:16px}
+.ptile__name h3{font-size:clamp(1.5rem,2.3vw,2.1rem)}
+.ptile__name h3 a{background:linear-gradient(currentColor,currentColor) 0 100%/0 2px no-repeat;transition:background-size .5s var(--ease)}
+.ptile__name h3 a:hover{background-size:100% 2px}
+.ptile__for{font-weight:560;color:var(--ink)}
+.ptile__desc{max-width:46ch;color:var(--steel)}
+.ptile__buy{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px 20px;margin-top:14px;padding-top:16px;border-top:1px solid var(--line)}
+
+/* ---------- DIZAINAS: tekstas ryškėja slenkant, dvi nuotraukos juda skirtingu greičiu ---------- */
+.say{padding:clamp(40px,6vw,88px) 0 calc(var(--sec) + 40px)}
+.say__grid{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(32px,6vw,104px);align-items:center}
+.say__big{font-size:clamp(1.55rem,2.9vw,2.65rem);line-height:1.2;font-weight:580;font-stretch:112%;letter-spacing:-.02em;color:var(--ink)}
+.say__big .w{white-space:nowrap}
+.js:not(.is-static) .say__big .w{opacity:.28;transition:opacity .35s linear}
+.js:not(.is-static) .say__big .w.is-lit{opacity:1}
+.say__photos{display:grid;grid-template-columns:1fr 1fr;gap:clamp(12px,1.6vw,24px);align-items:start}
+.say__ph--b{margin-top:26%}
+.say__ph .frame{aspect-ratio:3/4.5}
+.say__ph a{display:block}
+.say__ph figcaption{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:12px;font-weight:620;font-stretch:110%;color:var(--ink)}
+.say__ph figcaption .ico{transition:transform .5s var(--ease)}
+.say__ph a:hover figcaption .ico{transform:translate(3px,-3px)}
+.say__ph .frame img{transition:scale 1.2s var(--ease),clip-path 1.2s var(--ease)}
+.js:not(.is-static) .say__ph a:hover .frame.is-in img{scale:1.05}
+
+/* ---------- PANAUDOJIMAS: kortelių krūva ---------- */
+.uses{padding:var(--sec) 0 clamp(48px,7vw,104px)}
+.uses__stack{display:grid;gap:clamp(18px,2.2vw,30px)}
+.ucard{position:sticky;top:calc(20px + var(--i) * 16px)}
+.ucard__in{position:relative;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);min-height:min(66vh,560px);background:var(--mist);transform-origin:50% 0;will-change:transform}
+.ucard__in::after{content:"";position:absolute;inset:0;background:#fff;opacity:var(--veil,0);pointer-events:none}
+.ucard:nth-child(even) .ucard__in{background:var(--fog)}
+.ucard__media{position:relative;overflow:hidden;min-height:260px}
+.ucard__media img{position:absolute;inset:-14% 0;width:100%;height:128%;object-fit:cover}
+.ucard__body{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:16px;padding:clamp(28px,4.4vw,72px)}
+.ucard__body h3{font-size:clamp(1.9rem,3.4vw,3.2rem);font-stretch:122%;letter-spacing:-.026em;line-height:1}
+.ucard__body p{max-width:36ch;font-size:1.1rem}
+/* kiekviena scena susieta su konkrečia preke */
+.ucard__buy{display:inline-grid;grid-template-columns:64px auto 22px;align-items:center;gap:14px;margin-top:6px;padding:8px 18px 8px 8px;background:#fff;color:var(--ink);transition:background-color .3s var(--ease),color .3s var(--ease)}
+.ucard__buy img{width:64px;height:64px;padding:7px;object-fit:contain;background:var(--mist);transition:background-color .3s var(--ease)}
+.ucard__buy > span{display:grid;line-height:1.25}
+.ucard__buy strong{font-stretch:112%}
+.ucard__buy > span > span{font-size:.95rem;font-weight:560}
+.ucard__buy .ico{width:22px;height:22px;transition:transform .5s var(--ease)}
+.ucard__buy:hover{background:var(--ink);color:#fff}
+.ucard__buy:hover .ico{transform:translateX(5px)}
+
+/* ---------- RAMYBĖ: video juosta ---------- */
+.calm{position:relative;display:grid;align-items:center;min-height:min(84vh,740px);overflow:hidden;background:var(--mist)}
+.calm__media{position:absolute;inset:-20% 0}
+.calm__video{width:100%;height:100%;object-fit:cover;object-position:50% 50%;transform:scaleX(-1)}
+.calm::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(255,255,255,.9) 0%,rgba(255,255,255,.62) 30%,rgba(255,255,255,0) 56%);pointer-events:none}
+.calm__in{position:relative;z-index:1;display:grid;gap:20px;justify-items:start;padding-block:clamp(64px,9vw,120px)}
+.calm__in h2{font-size:clamp(2.1rem,4.6vw,4.2rem);max-width:13ch}
+.calm__in p{max-width:34ch;font-size:1.15rem;color:var(--ink)}
+
+/* ---------- IDĖJA ---------- */
+.idea{padding:var(--sec) 0}
+.idea__grid{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);gap:clamp(32px,6vw,112px);align-items:center}
+.idea__text{display:grid;gap:24px}
+.idea__text h2{font-size:clamp(2rem,4.1vw,3.7rem)}
+.idea__quote p{font-size:clamp(1.5rem,2.6vw,2.4rem);line-height:1.16;font-weight:600;font-stretch:112%;letter-spacing:-.02em;color:var(--ink)}
+.idea__text > p{max-width:52ch}
+.idea__sign{display:grid;gap:2px;padding-top:18px;border-top:1px solid var(--line)}
+.idea__sign strong{color:var(--ink);font-stretch:112%}
+.idea__sign span{font-size:.92rem;color:var(--steel)}
+.idea__ph .frame{aspect-ratio:4/3.3}
+.idea__ph figcaption{margin-top:12px;font-size:.92rem;color:var(--steel);max-width:46ch}
+
+/* ---------- PATARIMAI ----------
+   Kompiuteryje visi keturi patarimai matomi iškart, o užvedus ar pasirinkus keičiasi tik nuotrauka (sąrašas nešokinėja).
+   Telefone tai išskleidžiamas sąrašas. */
+.tips{padding:var(--sec) 0;background:var(--mist)}
+.tips__grid{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);gap:clamp(32px,6vw,104px);align-items:start}
+.tips__list h2{font-size:clamp(2rem,4.1vw,3.7rem);margin-bottom:clamp(28px,4vw,52px)}
+.tip{border-top:1px solid #C7CCD3}
+.tip:last-child{border-bottom:1px solid #C7CCD3}
+.tip h3{font:inherit;letter-spacing:0}
+.tip button{display:grid;grid-template-columns:2.4rem minmax(0,1fr) auto;gap:10px;align-items:start;width:100%;padding:22px 0 10px;text-align:left;font-size:clamp(1.1rem,1.65vw,1.45rem);font-weight:620;font-stretch:112%;letter-spacing:-.012em;line-height:1.2;color:var(--ink);cursor:default}
+.tip__n{color:var(--steel);font-weight:560}
+.tip__ico{display:none;place-items:center;width:30px;height:30px;transition:transform .5s var(--ease)}
+.tip__d p{padding:0 0 22px 2.4rem;margin-left:10px;max-width:56ch}
+.tip__img{display:none}
+/* aktyvų patarimą žymi juoda juostelė kairėje */
+.tip{position:relative}
+.tip::before{content:"";position:absolute;left:-20px;top:22px;bottom:22px;width:3px;background:var(--ink);transform:scaleY(0);transform-origin:50% 0;transition:transform .55s var(--ease)}
+.tip.is-on::before{transform:scaleY(1)}
+.tip.is-on .tip__n{color:var(--ink)}
+.tips__view{position:sticky;top:calc(var(--head-h) + 40px);aspect-ratio:4/4.6;overflow:hidden;background:var(--fog)}
+.tips__view img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;clip-path:inset(0 0 100% 0);transition:clip-path .9s var(--ease),scale 1.4s var(--ease);scale:1.08;z-index:0}
+.tips__view img.is-on{clip-path:inset(0);scale:1;z-index:2}
+.tips__view img.is-prev{clip-path:inset(0);z-index:1;transition:none}
+
+/* ---------- KONTAKTAI ---------- */
+.talk{padding:var(--sec) 0}
+.talk__grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(32px,6vw,112px);align-items:start}
+.talk__copy{display:grid;gap:22px}
+.talk__copy h2{font-size:clamp(2.2rem,5vw,4.6rem)}
+.talk__copy p{max-width:40ch;font-size:1.1rem}
+.talk__links{margin-top:10px;border-top:1px solid var(--line)}
+.talk__links a{display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid var(--line);font-size:clamp(1.15rem,1.9vw,1.6rem);font-weight:620;font-stretch:112%;letter-spacing:-.012em;color:var(--ink);transition:padding-left .5s var(--ease)}
+.talk__links a:hover{padding-left:10px}
+.talk__links .ico{width:26px;height:26px}
+
+/* ---------- mažesni ekranai ---------- */
+@media (max-width:1000px){
+  .hero{grid-template-columns:1fr;min-height:0}
+  .hero__copy{padding:clamp(36px,7vw,64px) var(--gut) clamp(28px,5vw,48px)}
+  .hero__title{font-size:clamp(2.1rem,7.4vw,3.8rem)}
+  .hero__lead{max-width:52ch}
+  .hero__stage{aspect-ratio:4/3;min-height:0}
+  .hero__photo{inset:-14% 0}
+  .shop__grid{grid-template-columns:1fr 1fr}
+  .ptile--telefono{margin-top:0}
+  .ptile--wifi .ptile__stage,.ptile--telefono .ptile__stage{aspect-ratio:1/1.05}
+  .say__grid,.idea__grid,.tips__grid,.talk__grid{grid-template-columns:1fr}
+  .calm::after{background:linear-gradient(90deg,rgba(255,255,255,.94) 0%,rgba(255,255,255,.78) 44%,rgba(255,255,255,0) 74%)}
+  .calm__in p{max-width:28ch}
+  /* patarimai: išskleidžiamas sąrašas */
+  .tips__view{display:none}
+  .tip button{padding:20px 0;cursor:pointer}
+  .tip__ico{display:grid}
+  .tip.is-on .tip__ico{transform:rotate(45deg)}
+  .tip__d{display:grid;grid-template-rows:0fr;visibility:hidden;transition:grid-template-rows .55s var(--ease),visibility 0s .55s}
+  .tip.is-on .tip__d{grid-template-rows:1fr;visibility:visible;transition:grid-template-rows .55s var(--ease)}
+  .tip__d > div{overflow:hidden;min-height:0}
+  .tip__d p{padding-right:0}
+  .tip__img{display:block;width:100%;aspect-ratio:3/2;object-fit:cover;margin:0 0 22px}
+  .tip::before{display:none}
+  .no-js .tip__d{grid-template-rows:1fr;visibility:visible}
+  .ucard__in{grid-template-columns:minmax(0,1fr);min-height:0}
+  .ucard__media{aspect-ratio:16/10;min-height:0}
+  .ucard{top:calc(12px + var(--i) * 10px)}
+}
+@media (max-width:640px){
+  .shop__grid{grid-template-columns:1fr;gap:44px}
+  .hero__cta .btn{flex:1 1 auto}
+  .hero__offer{gap:0 16px}
+  .hero__offer strong{font-size:1.15rem}
+  .calm{min-height:0}
+  .calm::after{background:linear-gradient(180deg,rgba(255,255,255,.96) 0%,rgba(255,255,255,.9) 40%,rgba(255,255,255,0) 62%)}
+  .calm__in{padding-block:48px 78vw}
+  .calm__in p{max-width:none}
+  .calm__video{object-position:52% 50%}
+  .tip button{grid-template-columns:2rem minmax(0,1fr) auto}
+  .tip__d p{padding-left:2rem}
+  .ucard{position:relative;top:auto}
+}
+/* labai siauri ekranai: prekių nuorodos viena po kita, kad jų linijos nesiskirtų aukščiu */
+@media (max-width:359px){
+  .hero__offer{grid-template-columns:minmax(0,1fr)}
+}

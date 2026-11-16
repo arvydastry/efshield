@@ -1,0 +1,50 @@
+{# Bendri blokai: antraštės skaidymas žodžiais, interaktyvi skydo schema ir bandymo skaičiai. #}
+
+{# Antraštė skaidoma žodžiais jau kūrimo metu, todėl puslapis nemirksi, kol įsikrauna scenarijai. #}
+{% macro split(text) %}{% for w in text.split(' ') %}<span class="ln" style="--l:{{ [loop.index0, 12] | min }}"><span>{{ w }}</span></span>{% if not loop.last %} {% endif %}{% endfor %}{% endmacro %}
+
+{% macro field(cfg) %}
+<!-- XStore: Elementor HTML valdiklis + child-theme scenarijus assets/js/field.js (be GSAP). Atsarginis variantas be scenarijaus: XStore „Image Comparison“ su dviem schemomis. -->
+<div class="field" data-field>
+  <div class="field__plot" data-field-plot>
+    <canvas class="field__canvas" data-field-canvas aria-hidden="true"></canvas>
+    <span class="field__router" aria-hidden="true">{{ cfg.source }}</span>
+    <span class="field__handle" data-field-handle aria-hidden="true"></span>
+    <div class="field__rooms" role="group" aria-label="{{ cfg.aria }}">
+      {% for r in cfg.rooms %}
+      <button class="field__room" type="button" aria-pressed="{{ 'true' if loop.first else 'false' }}" data-room="{{ r.id }}" data-angle="{{ r.angle }}" data-acc="{{ r.acc }}">{{ r.label }}</button>
+      {% endfor %}
+    </div>
+  </div>
+  <p class="field__status" data-field-status aria-live="polite">Skydas pasuktas į {{ cfg.rooms[0].acc }}.</p>
+  <p class="field__note">Schema iliustracinė. Vilkite skydą aplink {{ cfg.around }} arba pasirinkite vietą.</p>
+</div>
+{% endmacro %}
+
+{% macro meter(site) %}
+<!-- XStore: Elementor Heading / HTML valdikliai su demo skaitikliu (core.js); Elementor „Counter“ netinka, nes rašo „0.5“, o ne „0,5“. Vaizdo įrašas: XStore „Modal Popup“ su Elementor „Video“ valdikliu. -->
+<div class="wrap meter" data-meter>
+  <div class="meter__head">
+    <h3>Bandymas su telefono skydu</h3>
+    <button class="playlink" type="button" data-video="{{ site.videos.bandymas }}" data-video-title="Bandymas su telefono skydu ir matuokliu">
+      <span class="playlink__ico">{{ icon('play-fill') }}</span>
+      <span>Žiūrėti bandymo vaizdo įrašą</span>
+    </button>
+  </div>
+  <dl class="meter__vals">
+    <div class="meter__val">
+      <dt>Be skydo</dt>
+      <dd><span class="read" data-count="6" data-dec="0">6</span> <span class="unit">V/m</span></dd>
+    </div>
+    <div class="meter__val meter__val--calm">
+      <dt>Už skydo</dt>
+      <dd><span class="read" data-count="0.5" data-dec="1">0,5</span> <span class="unit">V/m</span></dd>
+    </div>
+    <div class="meter__val meter__val--calm">
+      <dt>Skirtumas</dt>
+      <dd><span class="read" data-count="12" data-dec="0">12</span> <span class="unit">kartų</span></dd>
+    </div>
+  </dl>
+  <p class="meter__src">EFshield bandymas su telefono skydu ir mobiliuoju telefonu, 2019&nbsp;m.: be skydo vidutinis lauko stipris siekė 6&nbsp;V/m, už skydo jis buvo 0,5&nbsp;V/m ir mažesnis.</p>
+</div>
+{% endmacro %}

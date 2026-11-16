@@ -1,0 +1,199 @@
+{
+  "brand": "EFshield",
+  "phone": "+370 618 11187",
+  "phone_href": "+37061811187",
+  "email": "info@efshield.com",
+  "facebook": "https://www.facebook.com/efshield",
+  "youtube": "https://www.youtube.com/@efshield223",
+  "shipping_note": "Nemokamas pristatymas visoje Lietuvoje",
+  "videos": {
+    "bandymas": "EJobhXMt3JU"
+  },
+  "nav": [
+    {"label": "Parduotuvė", "href": "index.html#produktai"},
+    {"label": "Kaip tai veikia", "href": "index.html#kaip-veikia"},
+    {"label": "Apie idėją", "href": "index.html#ideja"},
+    {"label": "Susisiekime", "href": "index.html#kontaktai"}
+  ],
+  "facts": [
+    "Tinka visiems telefonų modeliams",
+    "Tinka „Wi-Fi“ maršrutizatoriams",
+    "Neblokuoja interneto ryšio",
+    "Juodas arba baltas",
+    "Nemokamas pristatymas visoje Lietuvoje"
+  ],
+  "colors": [
+    {"id": "juodas", "label": "Juoda", "hex": "#0B0C0E"},
+    {"id": "baltas", "label": "Balta", "hex": "#FFFFFF"}
+  ],
+  "products": [
+    {
+      "id": "wifi",
+      "slug": "preke-wifi-skydas",
+      "name": "WIFI skydas",
+      "name_mid": "WIFI skydas",
+      "name_acc": "WIFI skydą",
+      "price": 30,
+      "for": "Namų „Wi-Fi“ maršrutizatoriui",
+      "card": "Pridengia pusę maršrutizatoriaus skleidžiamo lauko: tą, kurioje būnate dažniausiai.",
+      "img": "wifi",
+      "sizes": {"juodas": [1400, 1454], "baltas": [1400, 1439]},
+      "short": "Skydas susilpnina tiesiogines bangas, sklindančias nuo „Wi-Fi“ maršrutizatoriaus, ir sukuria ramesnę zoną pasirinktoje namų pusėje. Signalo neprarasite, bet sumažinsite jo stiprumą į tą pusę, kurią uždengėte.",
+      "description": [
+        "Vos įjungtas maršrutizatorius pradeda skleisti bangas iš vidinių arba išorinių antenų 360 laipsnių kampu, į visas puses. Įstačius maršrutizatoriaus antenas į šį skydą sukuriama 180 laipsnių siena.",
+        "Signalo neprarasite, bet sumažinsite jo stiprumą į pasirinktą pusę. Pirmiausia pagalvokite apie vietas, kuriose praleidžiate daugiausia laiko: miegamąjį, svetainę arba vaikų kambarį.",
+        "Skydas veikia veidrodžio principu: vienas iš jo sluoksnių nepralaidus elektromagnetinėms bangoms, todėl jos nukreipiamos į priešingą pusę."
+      ],
+      "steps_title": "Kaip pastatyti WIFI skydą",
+      "steps": [
+        {"t": "Uždenkite maršrutizatorių", "d": "Skydu uždenkite maršrutizatorių arba į skydą įstatykite jo antenas."},
+        {"t": "Pasirinkite pusę", "d": "Skydas turi būti tarp maršrutizatoriaus ir tos namų vietos, kurioje praleidžiate daugiausia laiko: miegamojo, svetainės ar vaikų kambario."},
+        {"t": "Ryšys lieka", "d": "Signalo neprarasite, bet sumažinsite jo stiprumą į tą pusę, kurią uždengėte."}
+      ],
+      "keyfacts": [
+        "Tinka „Wi-Fi“ maršrutizatoriams",
+        "Neblokuoja interneto ryšio",
+        "Pridengia pusę (180 laipsnių) pasirinkta kryptimi",
+        "Juodas arba baltas, su Gyvybės gėlės simboliu"
+      ],
+      "gallery": [
+        {"type": "product", "color": "juodas", "alt": "Juodas WIFI skydas su Gyvybės gėlės simboliu"},
+        {"type": "product", "color": "baltas", "alt": "Baltas WIFI skydas su Gyvybės gėlės simboliu"},
+        {"type": "photo", "src": "assets/img/client/stalas.webp", "thumb": "assets/img/client/stalas-sm.webp", "w": 1920, "h": 1280, "alt": "Juodas WIFI skydas ant darbo stalo šalia maršrutizatoriaus"}
+      ],
+      "faq_place": "Skydu uždenkite maršrutizatorių arba į skydą įstatykite jo antenas. Patį skydą pastatykite tarp maršrutizatoriaus ir tos vietos, kurioje praleidžiate daugiausia laiko: miegamojo, svetainės arba vaikų kambario.",
+      "field": {
+        "source": "Maršrutizatorius",
+        "around": "maršrutizatorių",
+        "aria": "Į kurią namų pusę pasukti skydą",
+        "rooms": [
+          {"id": "miegamasis", "label": "Miegamasis", "acc": "miegamąjį", "angle": -90},
+          {"id": "svetaine", "label": "Svetainė", "acc": "svetainę", "angle": 30},
+          {"id": "vaiku", "label": "Vaikų kambarys", "acc": "vaikų kambarį", "angle": 150}
+        ]
+      }
+    },
+    {
+      "id": "telefono",
+      "slug": "preke-telefono-skydas",
+      "name": "Telefono skydas",
+      "name_mid": "telefono skydas",
+      "name_acc": "telefono skydą",
+      "price": 25,
+      "for": "Telefonui prie lovos ar ant darbo stalo",
+      "card": "Padėkite telefoną už skydo: jis lieka įjungtas, o bangos jūsų kryptimi susilpnėja.",
+      "img": "telefono",
+      "sizes": {"juodas": [1306, 1138], "baltas": [1362, 1149]},
+      "short": "Skydas sukurtas taip, kad iš dalies blokuotų elektromagnetines bangas, sklindančias nuo išmaniojo telefono. Padėkite telefoną už skydo ir palikite jį įjungtą: skydo sluoksnis susilpnina bangas jūsų kryptimi.",
+      "description": [
+        "Net kai telefonu nesinaudojame, jis vis tiek skleidžia elektromagnetines bangas: nuolat palaiko ryšį su mobiliojo ryšio bokštais ir atnaujina programėlių duomenis (žinutes, el. laiškus ir kt.).",
+        "Padėjus telefoną už šio skydo, jame esantis sluoksnis susilpnina šias bangas jūsų kryptimi. Skydą galima naudoti ant darbo stalo, prie lovos, klausantis muzikos ar medituojant.",
+        "Jums nereikės išjungti telefono miegant ar ruošiantis ilsėtis. Skydas tinka visiems telefonų modeliams, jame galima laikyti kelis įrenginius vienu metu."
+      ],
+      "steps_title": "Kaip naudoti telefono skydą",
+      "steps": [
+        {"t": "Padėkite telefoną", "d": "Telefoną padėkite ant skydo pagrindo. Tinka visiems telefonų modeliams."},
+        {"t": "Pasukite sienelę į save", "d": "Skydo sienelė turi būti tarp telefono ir jūsų: lovos, darbo vietos ar fotelio pusėje."},
+        {"t": "Palikite telefoną įjungtą", "d": "Telefono nereikia išjungti nei miegant, nei ruošiantis ilsėtis. Skydas neblokuoja interneto ryšio."}
+      ],
+      "keyfacts": [
+        "Tinka visiems telefonų modeliams",
+        "Telefono išjungti nereikia",
+        "Viename skyde galima laikyti kelis įrenginius",
+        "Juodas arba baltas, su Gyvybės gėlės simboliu"
+      ],
+      "gallery": [
+        {"type": "product", "color": "juodas", "alt": "Juodas telefono skydas su telefonu ant pagrindo"},
+        {"type": "product", "color": "baltas", "alt": "Baltas telefono skydas su telefonu ant pagrindo"},
+        {"type": "photo", "src": "assets/img/client/telefonas.webp", "thumb": "assets/img/client/telefonas.webp", "w": 776, "h": 1600, "alt": "Juodas telefono skydas svetainėje, už jo padėtas telefonas"},
+        {"type": "photo", "src": "assets/img/scenes/miegas-spintele.webp", "thumb": "assets/img/scenes/miegas-spintele-sm.webp", "w": 1600, "h": 1066, "alt": "Moteris miega, telefonas padėtas ant spintelės šalia lovos"}
+      ],
+      "faq_place": "Telefoną padėkite ant skydo pagrindo, o sienelę pasukite į save: į lovos, darbo vietos ar fotelio pusę.",
+      "field": {
+        "source": "Telefonas",
+        "around": "telefoną",
+        "aria": "Į kurią pusę pasukti skydą",
+        "rooms": [
+          {"id": "lova", "label": "Lova", "acc": "lovą", "angle": -90},
+          {"id": "stalas", "label": "Darbo stalas", "acc": "darbo stalą", "angle": 30},
+          {"id": "fotelis", "label": "Fotelis", "acc": "fotelį", "angle": 150}
+        ]
+      }
+    }
+  ],
+  "uses": [
+    {
+      "t": "Poilsiui",
+      "d": "Skaitydami knygą, medituodami ar užsiimdami joga uždenkite telefoną skydu: jis lieka įjungtas, o bangos jūsų kryptimi susilpnėja.",
+      "img": "meditacija",
+      "alt": "Moteris medituoja šviesiame kambaryje",
+      "product": "telefono"
+    },
+    {
+      "t": "Namams",
+      "d": "Uždengę namų maršrutizatorių sumažinsite bangų srautą ten, kur būnate jūs ir jūsų vaikai.",
+      "img": "seima",
+      "alt": "Mama su dviem vaikais žaidžia svetainėje ant kilimo",
+      "product": "wifi"
+    },
+    {
+      "t": "Vaikų kambariui",
+      "d": "Skydu galima uždengti ir kitus prietaisus, pavyzdžiui, mobiliąsias aukles, kurios stovi šalia vaikų.",
+      "img": "kudikis",
+      "alt": "Kūdikis miega lovelėje",
+      "product": "telefono"
+    }
+  ],
+  "tips": [
+    {
+      "t": "Laikykite telefoną atokiau nuo kūno",
+      "d": "Nesinešiokite telefono kišenėje, nelaikykite po pagalve ar prie širdies. Skambindami naudokite garsiakalbį arba laidines ausines.",
+      "img": "ausines-skambutis",
+      "pos": "100% 50%",
+      "alt": "Moteris su laidinėmis ausinėmis laiko telefoną rankoje"
+    },
+    {
+      "t": "Kraukite prietaisus atokiau nuo vietų, kur ilsitės",
+      "d": "Kraunamus prietaisus geriau laikyti bent 1–2 metrų atstumu nuo lovos ar fotelio.",
+      "img": "krovimas-stalas",
+      "pos": "52% 50%",
+      "alt": "Telefonas jungiamas prie įkroviklio ant darbo stalo"
+    },
+    {
+      "t": "Išjunkite „Wi-Fi“ nakčiai",
+      "d": "Kol miegame, organizmas ilsisi. Išjungus belaidį tinklą nakties metu sumažėja bendras elektromagnetinis fonas namuose.",
+      "img": "marsrutizatorius",
+      "pos": "62% 50%",
+      "alt": "„Wi-Fi“ maršrutizatorius ant medinio stalo"
+    },
+    {
+      "t": "Ribokite vienu metu veikiančių belaidžių įrenginių skaičių",
+      "d": "Kuo daugiau „Bluetooth“, „Wi-Fi“ ar išmaniųjų prietaisų veikia vienu metu, tuo stipresnis bendras elektromagnetinis laukas.",
+      "img": "stalas-virsus",
+      "pos": "78% 50%",
+      "alt": "Nešiojamasis kompiuteris, telefonas ir belaidės ausinės ant balto stalo"
+    }
+  ],
+  "faq": [
+    {
+      "q": "Ar skydas blokuoja interneto ryšį?",
+      "a": "Ne. Signalo neprarasite, bet sumažinsite jo stiprumą į tą pusę, kurią uždengėte."
+    },
+    {
+      "q": "Kokiems įrenginiams tinka skydai?",
+      "a": "Skydai tinka visiems telefonų modeliams ir „Wi-Fi“ maršrutizatoriams. Viename skyde galima laikyti kelis įrenginius vienu metu."
+    },
+    {
+      "q": "Kaip skydas veikia?",
+      "a": "Visi EFshield skydai veikia veidrodžio principu: elektromagnetinės bangos ekranuojamos ir nukreipiamos į priešingą pusę. Vienas iš skydo sluoksnių nepralaidus elektromagnetinėms bangoms, todėl pasirinktoje pusėje laukas susilpnėja kelis kartus."
+    },
+    {
+      "q": "Kur skydą statyti?",
+      "a": "__PLACE__"
+    },
+    {
+      "q": "Kas pavaizduota ant skydo?",
+      "a": "Skydas papuoštas sakralios geometrijos simboliu, Gyvybės gėle. Juoda arba balta spalva ir minimalistinis dizainas tinka ir namams, ir darbo vietai."
+    }
+  ]
+}

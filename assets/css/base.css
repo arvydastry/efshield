@@ -1,0 +1,319 @@
+/* EFshield demo · bendra sistema (visi puslapiai)
+   Tapatybė: juoda / balta iš paties gaminio, vienintelis akcentas – „bangų“ oranžinė iš EFshield viršelio nuotraukos.
+   Taisyklė: oranžinė reiškia bangas arba matavimą. Kampai statūs (kaip skydo dėžutė), apskritimai – tik tikri apskritimai. */
+
+@font-face{font-family:"Mona Sans";src:url("../fonts/MonaSans.woff2") format("woff2");font-weight:200 900;font-stretch:75% 125%;font-display:swap}
+@font-face{font-family:"Doto";src:url("../fonts/Doto.woff2") format("woff2");font-weight:100 900;font-display:swap}
+
+:root{
+  --ink:#0B0C0E;
+  --ink-2:#17191D;
+  --paper:#FFFFFF;
+  --mist:#F0F2F4;
+  --fog:#E3E6EA;
+  --line:#D6DAE0;
+  --steel:#5F656E;
+  --text:#24272C;
+  --wave:#FF5300;
+  --err:#B3261E;
+  --font:"Mona Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --read:"Doto",ui-monospace,"SF Mono",Menlo,monospace;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --ease-io:cubic-bezier(.65,0,.35,1);
+  --wrap:1360px;
+  --gut:clamp(20px,4vw,56px);
+  --top-h:38px;
+  --head-h:72px;
+  --sec:clamp(72px,10vw,148px);
+  /* sluoksniai: 10 antraštė · 20 lipni pirkimo juosta · 40 užsklanda · 50 stalčius/meniu · 60 vaizdo langas · 70 pranešimas */
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{overflow-x:clip;scrollbar-gutter:stable;-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-padding-top:calc(var(--head-h) + 12px);color-scheme:light}
+html.is-locked{overflow:hidden}
+body{margin:0;background:var(--paper);color:var(--text);font-family:var(--font);font-size:1.0625rem;line-height:1.55;font-weight:420;font-stretch:100%;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;overflow-x:clip}
+img,svg,video,canvas{display:block;max-width:100%}
+img{height:auto}
+h1,h2,h3,h4,p,ul,ol,dl,dd,figure,blockquote,fieldset,legend{margin:0;padding:0}
+ul,ol{list-style:none}
+fieldset{border:0;min-width:0}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;border-radius:0}
+input,textarea,select{font:inherit;color:inherit;border-radius:0}
+/* fokusas: juodas šviesiame fone, baltas tamsiame (oranžinė palikta bangoms) */
+:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.stage :focus-visible,.mnav :focus-visible,.lightbox :focus-visible,.topbar :focus-visible{outline-color:#fff}
+section[tabindex="-1"]:focus,main[tabindex="-1"]:focus,div[tabindex="-1"]:focus{outline:none}
+::selection{background:var(--ink);color:#fff}
+[hidden]{display:none!important}
+
+h1,h2,h3{color:var(--ink);font-weight:640;font-stretch:122%;letter-spacing:-.024em;line-height:1.02;text-wrap:balance}
+h3{font-stretch:114%;letter-spacing:-.016em;line-height:1.1}
+p{text-wrap:pretty}
+strong{font-weight:640}
+
+.wrap{width:100%;max-width:calc(var(--wrap) + var(--gut) * 2);margin-inline:auto;padding-inline:var(--gut)}
+.nb{white-space:nowrap}
+.sr{position:absolute!important;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.skip{position:fixed;left:12px;top:-80px;z-index:80;background:var(--ink);color:#fff;padding:12px 18px;font-weight:600;transition:top .2s}
+.skip:focus{top:12px}
+.ico{width:1.25em;height:1.25em;fill:currentColor;flex:none}
+
+/* ---------- mygtukai: užvedus per mygtuką nuo pelės taško išsiplečia „banga“ ---------- */
+.btn{--x:50%;--y:50%;position:relative;isolation:isolate;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;gap:.6em;min-height:54px;padding:0 28px;border:1.5px solid var(--ink);font-size:.95rem;font-weight:620;font-stretch:110%;letter-spacing:.005em;line-height:1.1;white-space:nowrap;cursor:pointer;transition:color .3s var(--ease),border-color .3s var(--ease),transform .2s var(--ease)}
+.btn::before{content:"";position:absolute;z-index:-1;left:var(--x);top:var(--y);width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:50%;transform:scale(0);transition:transform .7s var(--ease);will-change:transform}
+.btn:hover::before,.btn:focus-visible::before{transform:scale(70)}
+.btn:active{transform:scale(.985)}
+.btn--ink{background:var(--ink);color:#fff}
+.btn--ink::before{background:var(--wave)}
+.btn--ink:hover,.btn--ink:focus-visible{color:var(--ink);border-color:var(--wave)}
+.btn--line{background:transparent;color:var(--ink)}
+.btn--line::before{background:var(--ink)}
+.btn--line:hover,.btn--line:focus-visible{color:#fff}
+.btn--wide{width:100%}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+
+.textlink{display:inline-flex;align-items:center;gap:.55em;font-weight:620;font-stretch:110%;color:var(--ink);padding-bottom:4px;background:linear-gradient(currentColor,currentColor) 0 100%/100% 1.5px no-repeat;transition:background-size .5s var(--ease)}
+.textlink .ico{transition:transform .5s var(--ease)}
+.textlink:hover{background-size:0 1.5px;background-position:100% 100%}
+.textlink:hover .ico{transform:translateX(5px)}
+
+.price{color:var(--ink);font-weight:640;font-stretch:114%;font-size:1.3rem;letter-spacing:-.01em;white-space:nowrap}
+.price small{font-size:.8rem;font-weight:500;font-stretch:100%;color:var(--steel);letter-spacing:0}
+
+/* prekių iškirptos nuotraukos be fono: visoms vienas šešėlis */
+.cutout{filter:drop-shadow(0 22px 20px rgba(11,12,14,.2))}
+
+/* ---------- viršutinė juosta ir antraštė ---------- */
+.topbar{background:var(--ink);color:#fff;font-size:.8125rem;font-weight:500}
+.topbar__in{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:var(--top-h)}
+.topbar__note{display:flex;align-items:center;gap:.6em}
+.topbar__links{display:flex;gap:22px}
+.topbar a{opacity:.86;transition:opacity .2s}
+.topbar a:hover{opacity:1;text-decoration:underline;text-underline-offset:.25em}
+
+.header{position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid var(--line);transition:transform .45s var(--ease)}
+.header.is-hidden{transform:translateY(-101%)}
+.header__in{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:24px;height:var(--head-h)}
+.logo{display:inline-flex;align-items:center}
+.logo img{height:30px;width:auto}
+.nav ul{display:flex;justify-content:center;gap:clamp(18px,2.6vw,42px)}
+.nav a{position:relative;display:block;padding:10px 0;font-size:.95rem;font-weight:560;font-stretch:108%;color:var(--ink)}
+.nav a::after{content:"";position:absolute;left:0;right:0;bottom:4px;height:1.5px;background:currentColor;transform:scaleX(0);transform-origin:100% 50%;transition:transform .45s var(--ease)}
+.nav a:hover::after,.nav a:focus-visible::after{transform:scaleX(1);transform-origin:0 50%}
+.header__tools{display:flex;align-items:center;gap:4px}
+.tool{position:relative;display:inline-grid;place-items:center;width:44px;height:44px;color:var(--ink);transition:background-color .25s}
+.tool .ico{width:24px;height:24px}
+.tool:hover{background:var(--mist)}
+.tool__count{position:absolute;top:4px;right:2px;min-width:18px;height:18px;padding:0 4px;background:var(--ink);color:#fff;font-size:.68rem;font-weight:700;line-height:18px;text-align:center}
+.tool__count.is-bump{animation:bump .5s var(--ease)}
+@keyframes bump{0%{transform:scale(1)}40%{transform:scale(1.5)}100%{transform:scale(1)}}
+.tool--menu{display:none}
+
+/* ---------- poraštė ---------- */
+.footer{background:var(--mist);border-top:1px solid var(--line);padding:clamp(48px,6vw,88px) 0 26px;font-size:.95rem}
+.footer__grid{display:grid;grid-template-columns:minmax(0,4fr) repeat(3,minmax(0,2fr));gap:clamp(24px,4vw,64px)}
+.footer__brand p{margin-top:18px;max-width:34ch;color:var(--steel)}
+.footer h2{font-size:.82rem;font-weight:660;font-stretch:112%;letter-spacing:.01em;margin-bottom:14px;line-height:1.3}
+.footer__col li{margin-bottom:9px}
+.footer__col a{color:var(--text);background:linear-gradient(currentColor,currentColor) 0 100%/0 1px no-repeat;transition:background-size .4s var(--ease)}
+.footer__col a:hover{background-size:100% 1px}
+.footer__social{display:flex;gap:6px;margin-top:14px}
+.footer__social a{display:grid;place-items:center;width:42px;height:42px;border:1px solid var(--line);background:#fff;transition:background-color .25s,color .25s,border-color .25s}
+.footer__social a:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
+.footer__social .ico{width:22px;height:22px}
+.footer__base{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px 24px;margin-top:clamp(36px,5vw,64px);padding-top:20px;border-top:1px solid var(--line);font-size:.84rem;color:var(--steel)}
+
+/* ---------- stalčius (krepšelis), mobilus meniu, užsklanda ---------- */
+.scrim{position:fixed;inset:0;z-index:40;background:rgba(11,12,14,.5);opacity:0;transition:opacity .4s var(--ease)}
+.scrim.is-on{opacity:1}
+.drawer{position:fixed;z-index:50;top:0;right:0;bottom:0;width:min(440px,100vw);background:#fff;display:flex;flex-direction:column;transform:translateX(102%);transition:transform .55s var(--ease);overscroll-behavior:contain}
+.drawer.is-on{transform:none}
+.drawer__head{display:flex;align-items:center;justify-content:space-between;padding:18px 16px 18px 28px;border-bottom:1px solid var(--line)}
+.drawer__head h2{font-size:1.35rem}
+.drawer__body{flex:1;overflow-y:auto;padding:8px 28px 24px;overscroll-behavior:contain}
+.drawer__empty{display:grid;justify-items:center;gap:18px;padding:56px 0;text-align:center;color:var(--steel)}
+.drawer__rosette{width:120px;height:120px;color:var(--fog)}
+.drawer__items li{display:grid;grid-template-columns:84px 1fr auto;gap:16px;align-items:center;padding:18px 0;border-bottom:1px solid var(--line)}
+.citem__img{width:84px;height:84px;background:var(--mist);display:grid;place-items:center}
+.citem__img.is-dark{background:var(--ink)}
+.citem__img img{width:78%;height:78%;object-fit:contain}
+.citem__name{font-weight:640;font-stretch:112%;color:var(--ink);line-height:1.2}
+.citem__meta{font-size:.88rem;color:var(--steel);margin:2px 0 10px}
+.citem__right{display:grid;justify-items:end;gap:10px}
+.citem__del{width:34px;height:34px;display:grid;place-items:center;color:var(--steel)}
+.citem__del:hover{color:var(--ink);background:var(--mist)}
+.drawer__foot{padding:20px 28px 26px;border-top:1px solid var(--line);background:#fff}
+.drawer__sum{display:grid;gap:8px;margin-bottom:18px}
+.drawer__sum div{display:flex;justify-content:space-between;gap:16px}
+.drawer__sum dt{color:var(--steel)}
+.drawer__sum dd{font-weight:640;color:var(--ink)}
+.drawer__note{margin-top:12px;font-size:.82rem;color:var(--steel);text-align:center}
+
+.qty{display:inline-grid;grid-template-columns:44px 52px 44px;height:54px;border:1.5px solid var(--ink)}
+.qty button{display:grid;place-items:center;transition:background-color .2s}
+.qty button:hover{background:var(--mist)}
+.qty input{width:100%;border:0;background:none;text-align:center;font-weight:640;-moz-appearance:textfield;appearance:textfield;padding:0}
+.qty input::-webkit-outer-spin-button,.qty input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.qty--sm{grid-template-columns:32px 34px 32px;height:36px;border-width:1px;border-color:var(--line)}
+.qty--sm .ico{width:14px;height:14px}
+
+.mnav{position:fixed;inset:0;z-index:50;background:var(--ink);color:#fff;display:flex;flex-direction:column;padding:14px var(--gut) 28px;overflow-y:auto;overscroll-behavior:contain;transform:translateY(-102%);transition:transform .6s var(--ease)}
+.mnav.is-on{transform:none}
+.mnav__head{display:flex;align-items:center;justify-content:space-between;height:var(--head-h);flex:none}
+.mnav__head img{height:30px;width:auto}
+.mnav .tool{color:#fff}
+.mnav .tool:hover{background:rgba(255,255,255,.12)}
+.mnav__list{flex:1 0 auto;display:flex;flex-direction:column;justify-content:safe center;gap:6px;padding-block:20px}
+.mnav__list a{display:block;padding:10px 0;font-size:clamp(2rem,9vw,3rem);font-weight:640;font-stretch:122%;letter-spacing:-.02em;line-height:1.05}
+.mnav__foot{display:grid;gap:6px;font-size:.95rem;color:rgba(255,255,255,.72);flex:none}
+.mnav__foot a{color:#fff}
+
+/* ---------- vaizdo / nuotraukos langas ---------- */
+.lightbox{position:fixed;inset:0;z-index:60;background:rgba(11,12,14,.94);display:grid;place-items:center;padding:clamp(16px,4vw,56px);opacity:0;transition:opacity .35s var(--ease);overscroll-behavior:contain}
+.lightbox.is-on{opacity:1}
+.lightbox__close{position:absolute;top:14px;right:14px;color:#fff}
+.lightbox__close:hover{background:rgba(255,255,255,.14)}
+.lightbox__frame{width:min(100%,1180px);aspect-ratio:16/9;background:#000;transform:scale(.96);transition:transform .5s var(--ease)}
+.lightbox.is-on .lightbox__frame{transform:none}
+.lightbox__frame iframe{width:100%;height:100%;border:0;display:block}
+.lightbox__frame.is-img{aspect-ratio:auto;background:none;width:auto;max-width:100%;max-height:100%;display:grid;place-items:center}
+.lightbox__frame.is-img img{max-width:100%;max-height:calc(100dvh - 2 * clamp(16px,4vw,56px));width:auto;height:auto;object-fit:contain;background:var(--mist)}
+.lightbox__frame.is-img img.is-dark{background:var(--ink-2)}
+
+.toast{position:fixed;z-index:70;left:0;right:0;bottom:24px;margin-inline:auto;width:fit-content;max-width:min(92vw,520px);background:var(--ink);color:#fff;padding:14px 20px;font-size:.92rem;font-weight:520;opacity:0;transform:translateY(24px);transition:opacity .35s var(--ease),transform .45s var(--ease);pointer-events:none;text-align:center;outline:1px solid rgba(255,255,255,.22)}
+.toast.is-on{opacity:1;transform:none}
+.is-locked .toast{bottom:auto;top:16px;transform:translateY(-24px)}
+.is-locked .toast.is-on{transform:none}
+
+/* ---------- spalvos pasirinkimas ---------- */
+.swatches{display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px}
+.swatch{position:relative;display:inline-flex;align-items:center;gap:9px;padding:6px 2px;cursor:pointer;font-size:.92rem;font-weight:520;color:var(--text)}
+.swatch input{position:absolute;opacity:0;width:100%;height:100%;inset:0;margin:0;cursor:pointer}
+.swatch__dot{width:22px;height:22px;border-radius:50%;border:1px solid rgba(11,12,14,.28);box-shadow:0 0 0 3px #fff,0 0 0 4px transparent;transition:box-shadow .3s var(--ease)}
+.swatch--juodas .swatch__dot{background:var(--ink)}
+.swatch--baltas .swatch__dot{background:#fff}
+.swatch input:checked + .swatch__dot{box-shadow:0 0 0 3px #fff,0 0 0 4.5px var(--ink)}
+.swatch input:focus-visible + .swatch__dot{outline:2px solid var(--ink);outline-offset:7px}
+.swatch input:checked ~ .swatch__label{color:var(--ink);font-weight:640}
+
+/* ---------- antraščių ir nuotraukų atsiradimas ----------
+   Antraštės suskaidytos žodžiais jau HTML'e (build.py). Paslepiamos tik kai veikia scenarijai ir judesys neišjungtas. */
+.js:not(.is-static) [data-split] .ln{display:inline-block;overflow:hidden;vertical-align:top;padding:.14em 0 .22em;margin:-.14em 0 -.22em}
+.js:not(.is-static) [data-split] .ln > span{display:inline-block;transform:translateY(125%);transition:transform 1s var(--ease);transition-delay:calc(var(--l) * 55ms)}
+.js:not(.is-static) [data-split].is-in .ln > span{transform:none}
+.frame{display:block;overflow:hidden;background:var(--fog)}
+.frame img{width:100%;height:100%;object-fit:cover}
+.js:not(.is-static) [data-reveal="mask"] img{clip-path:inset(100% 0 0 0);scale:1.14;transition:clip-path 1.2s var(--ease),scale 1.6s var(--ease)}
+.js:not(.is-static) [data-reveal="mask"].is-in img{clip-path:inset(0);scale:1}
+
+.head{display:grid;gap:18px;margin-bottom:clamp(28px,4.4vw,56px);max-width:60rem}
+.head h2{font-size:clamp(2rem,4.3vw,3.8rem)}
+.head--center{justify-items:center;text-align:center;margin-inline:auto}
+
+/* =====================================================================
+   TAMSI SCENA: „Kaip tai veikia“ (pirmas puslapis) ir „Kaip naudoti“ (prekė)
+   Vienintelė tamsi puslapio dalis: čia bangos matomos geriausiai.
+   ===================================================================== */
+/* peršokus nuoroda scena prasideda nuo pat ekrano viršaus: antraštė tada paslėpta, o grįžusi uždengia tik viršutinę paraštę */
+.stage{position:relative;scroll-margin-top:calc(-1 * (var(--head-h) + 12px))}
+.stage__panel{position:relative;overflow:hidden;background:var(--ink);color:#fff;padding:clamp(72px,9vw,136px) 0 clamp(56px,7vw,104px);--inset-max:min(5vw,calc(max(var(--gut),(100vw - var(--wrap)) / 2) - 16px));clip-path:inset(0 calc(var(--p,0) * var(--inset-max)))}
+.stage__rosette{position:absolute;right:-22vw;top:-20vw;width:min(70vw,1080px);aspect-ratio:1;color:rgba(255,255,255,.11);pointer-events:none}
+.stage__grid{position:relative;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(32px,6vw,96px);align-items:center}
+.stage h2,.stage h3{color:#fff}
+.stage__copy h2{font-size:clamp(2rem,4.1vw,3.7rem)}
+.stage__lead{margin-top:22px;max-width:44ch;font-size:1.15rem;color:rgba(255,255,255,.84)}
+.stage__points{margin:30px 0 0;border-top:1px solid rgba(255,255,255,.18)}
+.stage__points li{padding:15px 0;border-bottom:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.9)}
+.playlink{display:inline-flex;align-items:center;gap:16px;font-weight:620;font-stretch:110%;color:#fff;text-align:left}
+.playlink__ico{position:relative;display:grid;place-items:center;width:58px;height:58px;border-radius:50%;border:1.5px solid rgba(255,255,255,.7);overflow:hidden;isolation:isolate;transition:border-color .3s,color .3s;flex:none}
+.playlink__ico::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:50%;background:var(--wave);transform:scale(0);transition:transform .55s var(--ease)}
+.playlink__ico .ico{width:20px;height:20px;margin-left:2px}
+.playlink:hover .playlink__ico,.playlink:focus-visible .playlink__ico{border-color:var(--wave);color:var(--ink)}
+.playlink:hover .playlink__ico::before,.playlink:focus-visible .playlink__ico::before{transform:scale(1.05)}
+
+.field{position:relative}
+.field__plot{position:relative;width:min(100%,620px);aspect-ratio:1;margin-inline:auto;touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none}
+.field__plot.is-drag{cursor:grabbing}
+.field__canvas{position:absolute;inset:0;width:100%;height:100%}
+.field__router{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) translate(0,38px);padding:3px 7px;background:var(--ink);font-size:.8rem;font-weight:560;line-height:1.2;color:rgba(255,255,255,.88);pointer-events:none;white-space:nowrap}
+/* skydo rankenėlė: liečiamuose ekranuose skydas sukamas tik už jos, kad braukiant per schemą puslapis slinktų */
+.field__handle{position:absolute;left:var(--hx,50%);top:var(--hy,38%);width:64px;height:64px;margin:-32px 0 0 -32px;border-radius:50%;touch-action:none;cursor:grab}
+.field__rooms{position:absolute;inset:0;pointer-events:none}
+.field__room{position:absolute;left:var(--x,50%);top:var(--y,50%);transform:translate(-50%,-50%);pointer-events:auto;padding:9px 14px;border:1.5px solid rgba(255,255,255,.34);font-size:.9rem;font-weight:620;font-stretch:108%;line-height:1.1;white-space:nowrap;color:rgba(255,255,255,.78);background:rgba(11,12,14,.72);transition:color .35s var(--ease),background-color .35s var(--ease),border-color .35s var(--ease)}
+.field__room:hover{border-color:#fff;color:#fff}
+.field__room.is-calm{color:#fff;border-color:#fff}
+.field__room[aria-pressed="true"]{background:#fff;color:var(--ink);border-color:#fff}
+.field__room.is-open{color:var(--wave);border-color:rgba(255,83,0,.6)}
+.field__status{margin-top:18px;text-align:center;font-weight:620;font-stretch:108%;color:#fff;min-height:1.6em}
+.field__note{margin-top:6px;text-align:center;font-size:.86rem;color:rgba(255,255,255,.66)}
+.no-js .field,.is-nofield .field{display:none}
+
+.meter{position:relative;margin-top:clamp(56px,8vw,116px)}
+.meter__head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 32px}
+.meter h3{font-size:clamp(1.3rem,2.2vw,1.9rem)}
+.meter__vals{display:grid;grid-template-columns:repeat(3,minmax(0,auto));justify-content:start;gap:clamp(28px,6vw,112px);margin:22px 0 26px;padding-top:30px;border-top:1px solid rgba(255,255,255,.18)}
+.meter__val dt{font-size:.92rem;color:rgba(255,255,255,.72);margin-bottom:6px}
+.meter__val dd{display:flex;align-items:baseline;gap:.5rem;flex-wrap:wrap}
+.read{font-family:var(--read);font-weight:900;font-variation-settings:"ROND" 100;font-size:clamp(4rem,11.5vw,10.5rem);line-height:.86;letter-spacing:-.02em;color:var(--wave);font-variant-numeric:tabular-nums}
+.meter__val--calm .read{color:#fff}
+.unit{font-size:clamp(1rem,1.6vw,1.35rem);font-weight:620;font-stretch:112%;color:#fff}
+.meter__src{max-width:60ch;font-size:.95rem;color:rgba(255,255,255,.74)}
+
+/* ---------- formos ---------- */
+.form{display:grid;gap:20px}
+.form__row{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.field-in label{display:block;margin-bottom:8px;font-size:.9rem;font-weight:620;color:var(--ink)}
+.field-in .opt{font-weight:420;color:var(--steel)}
+.field-in input:not([type="checkbox"]),.field-in textarea{display:block;width:100%;padding:14px 16px;border:1.5px solid #7E848E;background:#fff;color:var(--ink);transition:border-color .2s}
+.field-in textarea{resize:vertical;min-height:120px}
+.field-in input:hover,.field-in textarea:hover{border-color:var(--ink)}
+.field-in input:focus-visible,.field-in textarea:focus-visible{border-color:var(--ink);outline-offset:2px}
+.field-in.is-bad input:not([type="checkbox"]),.field-in.is-bad textarea{border-color:var(--err)}
+.field-in__hint{margin-top:6px;font-size:.84rem;color:var(--steel);text-align:right}
+.field-in__err{margin-top:6px;font-size:.88rem;font-weight:520;color:var(--err)}
+.field-in .check{display:flex;gap:12px;align-items:flex-start;margin:0;font-size:.95rem;font-weight:420;color:var(--text);cursor:pointer}
+.check input{appearance:none;-webkit-appearance:none;display:grid;place-content:center;width:22px;height:22px;margin:1px 0 0;border:1.5px solid #7E848E;border-radius:0;background:#fff;flex:none;cursor:pointer}
+.check input:checked{background:var(--ink);border-color:var(--ink)}
+.check input:checked::after{content:"";width:11px;height:6px;border:solid #fff;border-width:0 0 2px 2px;transform:translateY(-1px) rotate(-45deg)}
+.field-in.is-bad .check input{border-color:var(--err)}
+.check a{text-decoration:underline;text-underline-offset:.2em}
+.form .btn{justify-self:start}
+.form__done{padding:16px 18px;background:var(--mist);border-left:3px solid var(--ink);font-weight:520;color:var(--ink)}
+
+/* ---------- mažesni ekranai ---------- */
+@media (max-width:1000px){
+  .nav{display:none}
+  .header__in{grid-template-columns:1fr auto}
+  .tool--menu{display:inline-grid}
+  .topbar__links a:last-child{display:none}
+  .footer__grid{grid-template-columns:1fr 1fr}
+  .footer__brand{grid-column:1/-1}
+  .stage__grid{grid-template-columns:1fr}
+  .stage__rosette{width:110vw;right:-40vw;top:-30vw}
+}
+@media (max-width:640px){
+  :root{--head-h:62px}
+  body{font-size:1rem}
+  .topbar__links{display:none}
+  .topbar__in{justify-content:center}
+  .logo img{height:26px}
+  .footer__grid{grid-template-columns:1fr}
+  .form__row{grid-template-columns:1fr}
+  .meter__vals{grid-template-columns:1fr 1fr;gap:26px 20px}
+  .field__room{padding:8px 10px;font-size:.8rem}
+  .btn{min-height:52px;padding:0 22px}
+}
+
+/* liečiamuose ekranuose valdikliai ne mažesni kaip 44px */
+@media (max-width:640px),(pointer:coarse){
+  .field__room{display:inline-flex;align-items:center;min-height:44px}
+  .qty--sm{grid-template-columns:40px 36px 40px;height:44px}
+  .citem__del{width:44px;height:44px}
+  .swatch{padding-block:11px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
+.is-static *,.is-static *::before,.is-static *::after{animation-play-state:paused!important}

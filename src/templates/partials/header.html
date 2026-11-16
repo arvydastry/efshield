@@ -1,0 +1,36 @@
+<!-- XStore: Header Builder (Elementor), viršutinis konteineris: Text Editor + XStore „Icon List“ (kontaktai); matomumas pagal ekraną nustatomas valdikliuose -->
+<div class="topbar">
+  <div class="wrap topbar__in">
+    <p class="topbar__note">{{ icon('truck') }}<span>{{ site.shipping_note }}</span></p>
+    <p class="topbar__links">
+      <a href="tel:{{ site.phone_href }}">{{ site.phone }}</a>
+      <a href="mailto:{{ site.email }}">{{ site.email }}</a>
+    </p>
+  </div>
+</div>
+<!-- XStore: Header Builder (Elementor): „Site Logo“, „Nav Menu“, „Account“, „Cart“ (off-canvas), „Mobile Menu“; konteinerio sticky tipas „smart“ (slepiasi slenkant žemyn) -->
+<header class="header" data-header>
+  <div class="wrap header__in">
+    <a class="logo" href="index.html" aria-label="EFshield, pradžios puslapis">
+      <img src="assets/img/brand/logo-ink.png" width="583" height="120" alt="efshield.com">
+    </a>
+    <nav class="nav" aria-label="Pagrindinis meniu">
+      <ul>
+        {% for n in site.nav %}
+        <li><a href="{{ n.href if home else n.href.replace('index.html', '') }}">{{ n.label }}</a></li>
+        {% endfor %}
+      </ul>
+    </nav>
+    <div class="header__tools">
+      <a class="tool" href="#" data-demo="Paskyros puslapis" aria-label="Paskyra">{{ icon('user') }}</a>
+      <button class="tool tool--cart" type="button" data-cart-open aria-haspopup="dialog" aria-controls="krepselis">
+        {{ icon('shopping-bag') }}
+        <span class="sr">Krepšelis</span>
+        <span class="tool__count" data-cart-count hidden>0</span>
+      </button>
+      <button class="tool tool--menu" type="button" data-menu-open aria-expanded="false" aria-controls="mobilus-meniu">
+        {{ icon('list') }}<span class="sr">Meniu</span>
+      </button>
+    </div>
+  </div>
+</header>

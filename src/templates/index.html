@@ -1,0 +1,287 @@
+{% extends "base.html" %}
+{% block title %}EFshield | Skydai nuo telefono ir „Wi-Fi“ maršrutizatoriaus bangų{% endblock %}
+{% block description %}EFshield skydai kelis kartus sumažina telefono ir „Wi-Fi“ maršrutizatoriaus bangų stiprumą pasirinktoje pusėje. Nuo 25,00 €, nemokamas pristatymas Lietuvoje.{% endblock %}
+{% block body_class %}home{% endblock %}
+{% block preload %}<link rel="preload" as="image" href="assets/img/client/stalas.webp" imagesrcset="assets/img/client/stalas-sm.webp 960w, assets/img/client/stalas.webp 1920w" imagesizes="(min-width: 1001px) 92vw, 135vw">{% endblock %}
+{% block css %}<link rel="stylesheet" href="assets/css/home.css">{% endblock %}
+{% block js %}
+<script src="assets/js/field.js" defer></script>
+<script src="assets/js/home.js" defer></script>
+{% endblock %}
+
+{% block main %}
+{% import "partials/blocks.html" as blocks %}
+<!-- ============ HERO · XStore: Elementor Container (2 stulpeliai): Heading + Text Editor + 2× XStore „Text Button“; dešinėje vienas HTML valdiklis su nuotrauka ir bangų SVG (bendra koordinačių sistema) ============ -->
+<section class="hero" data-hero>
+  <div class="hero__copy">
+    <h1 class="hero__title" data-split>{{ blocks.split('Skydai nuo telefono ir „Wi-Fi“ bangų') }}</h1>
+    <p class="hero__lead">EFshield skydu uždenkite „Wi-Fi“ maršrutizatorių ar telefoną. Uždengtoje pusėje elektromagnetinė spinduliuotė sumažėja kelis kartus, o ryšys lieka.</p>
+    <div class="hero__cta">
+      <a class="btn btn--ink" href="#produktai">Rinktis skydą</a>
+      <a class="btn btn--line" href="#kaip-veikia">Kaip tai veikia</a>
+    </div>
+    <ul class="hero__offer">
+      {% for p in site.products %}
+      <li><a href="{{ p.slug }}.html"><span>{{ p.name }}</span> <strong>{{ p.price | price }}</strong>{{ icon('arrow-right') }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="hero__stage" data-hero-stage>
+    <div class="hero__photo" data-hero-photo>
+      <div class="hero__plate">
+        <img src="assets/img/client/stalas.webp" srcset="assets/img/client/stalas-sm.webp 960w, assets/img/client/stalas.webp 1920w" sizes="(min-width: 1001px) 92vw, 135vw" width="1920" height="1280" alt="Juodas EFshield WIFI skydas ant darbo stalo: vienoje pusėje maršrutizatorius, kitoje nešiojamasis kompiuteris" fetchpriority="high">
+        <svg class="hero__waves" viewBox="0 0 2048 1365" aria-hidden="true" data-hero-waves>
+          <g class="wv wv--out">
+            {% for a in hero_arcs.out %}<path d="{{ a.d }}" style="--i:{{ loop.index0 }}"/>{% endfor %}
+          </g>
+          <g class="wv wv--in">
+            {% for a in hero_arcs.inc %}<path d="{{ a.d }}"/>{% endfor %}
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAKTŲ JUOSTA · XStore: „Marquee“ (etheme_marquee); pagreitėjimas slenkant ir besisukantis skyriklis tarp teiginių – child-theme scenarijus ============ -->
+<div class="marquee" data-marquee>
+  <ul class="sr">
+    {% for f in site.facts %}<li>{{ f }}</li>{% endfor %}
+  </ul>
+  <div class="marquee__track" aria-hidden="true">
+    {% for n in range(2) %}
+    <div class="marquee__row">
+      {% for f in site.facts %}<span>{{ f }}</span><svg class="marquee__sep"><use href="#rosette-mini"/></svg>{% endfor %}
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- ============ PRODUKTAI · XStore: „Product Grid“ (etheme_product_grid) su Variation swatches kortelėse; plytelės fonas pagal spalvą, bangos užvedus ir pakreipimas – child-theme CSS/JS ============ -->
+<section class="shop" id="produktai" aria-labelledby="produktai-h">
+  <div class="wrap">
+    <header class="head">
+      <h2 id="produktai-h" data-split>{{ blocks.split('Išsirinkite skydą') }}</h2>
+    </header>
+    <div class="shop__grid">
+      {% for p in site.products %}
+      <article class="ptile ptile--{{ p.id }}" data-product="{{ p.id }}" data-color="juodas"{% if not loop.first %} data-speed="5" data-speed-min="1001"{% endif %}>
+        <a class="ptile__stage" href="{{ p.slug }}.html" data-tilt data-color-link aria-label="{{ p.name }}: žiūrėti prekę">
+          <svg class="ptile__waves" viewBox="-100 -100 200 200" aria-hidden="true">
+            <circle r="34"/><circle r="52"/><circle r="70"/><circle r="88"/>
+          </svg>
+          {% for c in ['juodas', 'baltas'] %}
+          <img class="ptile__img ptile__img--{{ c }}" src="assets/img/products/{{ p.img }}-{{ c }}.webp" srcset="assets/img/products/{{ p.img }}-{{ c }}-sm.webp 640w, assets/img/products/{{ p.img }}-{{ c }}.webp 1400w" sizes="(min-width: 1001px) 40vw, (min-width: 641px) 46vw, 92vw" width="{{ p.sizes[c][0] }}" height="{{ p.sizes[c][1] }}" alt="{{ 'Juodas' if c == 'juodas' else 'Baltas' }} {{ p.name_mid }}" loading="lazy" decoding="async" data-tilt-layer>
+          {% endfor %}
+        </a>
+        <div class="ptile__info">
+          <div class="ptile__name">
+            <h3><a href="{{ p.slug }}.html" data-color-link>{{ p.name }}</a></h3>
+            <p class="price">{{ p.price | price }}</p>
+          </div>
+          <p class="ptile__for">{{ p.for }}</p>
+          <p class="ptile__desc">{{ p.card }}</p>
+          <div class="ptile__buy">
+            <fieldset class="swatches">
+              <legend class="sr">{{ p.name }}: spalva</legend>
+              {% for c in site.colors %}
+              <label class="swatch swatch--{{ c.id }}">
+                <input type="radio" name="spalva-{{ p.id }}" value="{{ c.id }}"{% if loop.first %} checked{% endif %}>
+                <span class="swatch__dot" aria-hidden="true"></span>
+                <span class="swatch__label">{{ c.label }}</span>
+              </label>
+              {% endfor %}
+            </fieldset>
+            <button class="btn btn--ink" type="button" data-add="{{ p.id }}">Į krepšelį</button>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ============ DIZAINAS · XStore: Elementor Text Editor (žodžių ryškėjimas slenkant – child-theme scenarijus) + 2× Image su „XStore Parallax“ (Advanced > scroll_effects) ============ -->
+<section class="say" aria-labelledby="say-h">
+  <div class="wrap say__grid">
+    <div class="say__text">
+      <h2 id="say-h" class="sr">Dizainas</h2>
+      <p class="say__big" data-words>Juoda arba balta spalva ir minimalistinis dizainas tinka ir namams, ir darbo vietai. Viename skyde vienu metu galima laikyti kelis įrenginius.</p>
+    </div>
+    <div class="say__photos">
+      <figure class="say__ph say__ph--a" data-speed="-16">
+        <a href="preke-wifi-skydas.html">
+          <span class="frame" data-reveal="mask"><img src="assets/img/client/subtilus.webp" width="860" height="1600" alt="Juodas WIFI skydas šalia maršrutizatoriaus namų interjere" loading="lazy" decoding="async"></span>
+          <figcaption>WIFI skydas{{ icon('arrow-up-right') }}</figcaption>
+        </a>
+      </figure>
+      <figure class="say__ph say__ph--b" data-speed="20">
+        <a href="preke-telefono-skydas.html">
+          <span class="frame" data-reveal="mask"><img src="assets/img/client/telefonas.webp" width="776" height="1600" alt="Juodas telefono skydas svetainėje, už jo padėtas telefonas" loading="lazy" decoding="async"></span>
+          <figcaption>Telefono skydas{{ icon('arrow-up-right') }}</figcaption>
+        </a>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============ KAIP TAI VEIKIA · tamsi scena. XStore: Elementor Container (tamsus fonas) + Heading, Text Editor, XStore „Icon List“; schema ir skaičiai – žr. komentarus blokuose ============ -->
+<section class="stage" id="kaip-veikia" data-stage aria-labelledby="veikia-h">
+  <div class="stage__panel" data-stage-panel>
+    <svg class="stage__rosette" aria-hidden="true" data-stage-rosette><use href="#rosette-line"/></svg>
+    <div class="wrap stage__grid">
+      <div class="stage__copy">
+        <h2 id="veikia-h" data-split>{{ blocks.split('Skydas veikia kaip veidrodis') }}</h2>
+        <p class="stage__lead">Vienas iš skydo sluoksnių nepralaidus elektromagnetinėms bangoms. Jos nukreipiamos į priešingą pusę, o už skydo lieka ramesnė zona.</p>
+        <ul class="stage__points">
+          <li>Maršrutizatorius skleidžia bangas 360 laipsnių kampu, į visas puses.</li>
+          <li>Skydas pridengia pusę šio rato (180 laipsnių): tą, kurią pasirenkate.</li>
+          <li>Signalo neprarasite, bet sumažinsite jo stiprumą į uždengtą pusę.</li>
+        </ul>
+      </div>
+      {{ blocks.field(products_by_id.wifi.field) }}
+    </div>
+
+    {{ blocks.meter(site) }}
+  </div>
+</section>
+
+<!-- ============ PANAUDOJIMAS · XStore: 3× Elementor Container (Image + Heading + Text Editor + nuoroda į prekę); kortelių krūva – child-theme CSS (position:sticky) + scenarijus ============ -->
+<section class="uses" id="panaudojimas" aria-labelledby="uses-h">
+  <div class="wrap">
+    <header class="head head--center">
+      <h2 id="uses-h" data-split>{{ blocks.split('Kur skydas praverčia') }}</h2>
+    </header>
+    <div class="uses__stack" data-stack>
+      {% for u in site.uses %}
+      {% set p = products_by_id[u.product] %}
+      <article class="ucard" style="--i:{{ loop.index0 }}" data-stack-card>
+        <div class="ucard__in">
+          <figure class="ucard__media">
+            <img src="assets/img/scenes/{{ u.img }}.webp" srcset="assets/img/scenes/{{ u.img }}-sm.webp 800w, assets/img/scenes/{{ u.img }}.webp 1600w" sizes="(min-width: 1001px) 66vw, 100vw" width="1600" height="1066" alt="{{ u.alt }}" loading="lazy" decoding="async">
+          </figure>
+          <div class="ucard__body">
+            <h3>{{ u.t }}</h3>
+            <p>{{ u.d }}</p>
+            <a class="ucard__buy" href="{{ p.slug }}.html">
+              <img src="assets/img/products/{{ p.img }}-juodas-sm.webp" width="{{ p.sizes.juodas[0] }}" height="{{ p.sizes.juodas[1] }}" alt="" loading="lazy" decoding="async">
+              <span><strong>{{ p.name }}</strong> <span>{{ p.price | price }}</span></span>
+              {{ icon('arrow-right') }}
+            </a>
+          </div>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ============ RAMYBĖ · XStore: Elementor Container su fonu „Video“ (savo serveryje) + Heading + Text Editor + XStore „Text Button“ ============ -->
+<section class="calm" data-calm aria-labelledby="calm-h">
+  <div class="calm__media" data-speed-bg>
+    <video class="calm__video" muted loop playsinline preload="none" poster="assets/video/miegas.webp" data-src="assets/video/miegas.mp4" aria-hidden="true" tabindex="-1"></video>
+  </div>
+  <div class="wrap calm__in">
+    <h2 id="calm-h" data-split>{{ blocks.split('Telefono išjungti nereikia') }}</h2>
+    <p>Padėkite jį už skydo ir ilsėkitės: skydas neblokuoja interneto ryšio.</p>
+    <a class="btn btn--ink" href="preke-telefono-skydas.html">Žiūrėti telefono skydą</a>
+  </div>
+</section>
+
+<!-- ============ IDĖJA · XStore: „Blockquote“ (etheme_blockquote) + Heading + Text Editor + Image su prierašu ir „XStore Parallax“ ============ -->
+<section class="idea" id="ideja" aria-labelledby="idea-h">
+  <div class="wrap idea__grid">
+    <div class="idea__text">
+      <h2 id="idea-h" data-split>{{ blocks.split('Kaip gimė idėja?') }}</h2>
+      <blockquote class="idea__quote">
+        <p>„Pajutau aiškius savijautos ir nuovargio skirtumus.“</p>
+      </blockquote>
+      <p>Pradėjau jausti, kad dirbdamas prie stacionaraus kompiuterio jaučiuosi kitaip nei dirbdamas prie nešiojamojo ar planšetinio kompiuterio ir telefono. Nuo tada pradėjau domėtis, gilintis, tirti aplinką ir stebėti savijautą veikiančius veiksnius. Surinkęs nemažai informacijos iš mokslinių straipsnių, ekspertų ir savarankiškų tyrimų, sukūriau skydus, kad galėtume sumažinti prietaisų skleidžiamos elektromagnetinės spinduliuotės intensyvumą.</p>
+      <p class="idea__sign"><strong>Edgaras</strong><span>EFshield skydų kūrėjas</span></p>
+    </div>
+    <figure class="idea__ph" data-speed="12">
+      <span class="frame" data-reveal="mask"><img src="assets/img/client/renginys-diskusija.webp" srcset="assets/img/client/renginys-diskusija-sm.webp 640w, assets/img/client/renginys-diskusija.webp 1280w" sizes="(min-width: 1001px) 42vw, 92vw" width="1280" height="960" alt="Diskusijų festivalio „Būtent!“ lankytojai klausosi pokalbio apie elektromagnetines bangas" loading="lazy" decoding="async"></span>
+      <figcaption>Diskusijų festivalis „Būtent!“, Birštonas, 2019&nbsp;m. Lankytojus labiausiai sudomino eksperimentas: matuokliu matavome mobiliųjų telefonų skleidžiamų bangų intensyvumą.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ PATARIMAI · XStore: Elementor „Accordion“ (mobiliajame) arba Text Editor sąrašas + Image; nuotraukos keitimas užvedus – child-theme scenarijus ============ -->
+<section class="tips" id="patarimai" aria-labelledby="tips-h">
+  <div class="wrap tips__grid">
+    <div class="tips__list">
+      <h2 id="tips-h" data-split>{{ blocks.split('Kaip sumažinti bangų poveikį jau dabar') }}</h2>
+      <ol data-tips>
+        {% for t in site.tips %}
+        <li class="tip{% if loop.first %} is-on{% endif %}" data-tip="{{ loop.index0 }}">
+          <h3>
+            <button type="button" aria-expanded="{{ 'true' if loop.first else 'false' }}" aria-controls="tip-{{ loop.index }}" id="tip-b-{{ loop.index }}">
+              <span class="tip__n" aria-hidden="true">{{ loop.index }}</span>
+              <span class="tip__t">{{ t.t }}</span>
+              <span class="tip__ico" aria-hidden="true">{{ icon('plus') }}</span>
+            </button>
+          </h3>
+          <div class="tip__d" id="tip-{{ loop.index }}" role="region" aria-labelledby="tip-b-{{ loop.index }}">
+            <div><p>{{ t.d }}</p>
+              <img class="tip__img" src="assets/img/scenes/{{ t.img }}-sm.webp" width="800" height="533" alt="{{ t.alt }}" loading="lazy" decoding="async">
+            </div>
+          </div>
+        </li>
+        {% endfor %}
+      </ol>
+    </div>
+    <div class="tips__view" aria-hidden="true" data-tips-view>
+      {% for t in site.tips %}
+      <img class="{% if loop.first %}is-on{% endif %}" src="assets/img/scenes/{{ t.img }}.webp" srcset="assets/img/scenes/{{ t.img }}-sm.webp 800w, assets/img/scenes/{{ t.img }}.webp 1600w" sizes="(min-width: 1001px) 42vw, 1px" width="1600" height="1066" alt="" loading="lazy" decoding="async"{% if t.pos %} style="object-position:{{ t.pos }}"{% endif %}>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ============ KONTAKTAI · XStore: „Contact Form 7“ valdiklis (et-contact-form-7) arba Elementor forma (PRO Elements) + XStore „Icon List“ ============ -->
+<section class="talk" id="kontaktai" aria-labelledby="talk-h">
+  <div class="wrap talk__grid">
+    <div class="talk__copy">
+      <h2 id="talk-h" data-split>{{ blocks.split('Pabendraukime') }}</h2>
+      <p>Turite klausimų apie skydus ar jų veikimą, o gal norite patarimo? Parašykite, atsakysiu.</p>
+      <ul class="talk__links">
+        <li><a href="tel:{{ site.phone_href }}">{{ icon('phone') }}<span>{{ site.phone }}</span></a></li>
+        <li><a href="mailto:{{ site.email }}">{{ icon('envelope-simple') }}<span>{{ site.email }}</span></a></li>
+      </ul>
+    </div>
+    <form class="form" data-form novalidate>
+      <div class="form__row">
+        <div class="field-in">
+          <label for="f-vardas">Vardas</label>
+          <input id="f-vardas" name="vardas" type="text" autocomplete="given-name" required aria-describedby="e-vardas">
+          <p class="field-in__err" id="e-vardas" data-err hidden>Įrašykite vardą.</p>
+        </div>
+        <div class="field-in">
+          <label for="f-pastas">El. paštas</label>
+          <input id="f-pastas" name="pastas" type="email" autocomplete="email" required aria-describedby="e-pastas">
+          <p class="field-in__err" id="e-pastas" data-err hidden>Įrašykite teisingą el. pašto adresą.</p>
+        </div>
+      </div>
+      <div class="field-in">
+        <label for="f-tel">Telefono numeris <span class="opt">(neprivaloma)</span></label>
+        <input id="f-tel" name="telefonas" type="tel" autocomplete="tel">
+      </div>
+      <div class="field-in">
+        <label for="f-klausimas">Jūsų klausimas</label>
+        <textarea id="f-klausimas" name="klausimas" rows="4" maxlength="180" required data-counter aria-describedby="h-klausimas e-klausimas"></textarea>
+        <p class="field-in__hint" id="h-klausimas"><span data-count-out>0</span> / 180 <span class="sr">ženklų</span></p>
+        <p class="field-in__err" id="e-klausimas" data-err hidden>Parašykite klausimą.</p>
+      </div>
+      <div class="field-in field-in--check">
+        <label class="check">
+          <input type="checkbox" name="sutikimas" required aria-describedby="e-sutikimas">
+          <span>Susipažinau ir sutinku su <a href="#" data-demo="Privatumo politika">privatumo politika</a>.</span>
+        </label>
+        <p class="field-in__err" id="e-sutikimas" data-err hidden>Pažymėkite, kad sutinkate su privatumo politika.</p>
+      </div>
+      <button class="btn btn--ink" type="submit">Siųsti klausimą</button>
+      <p class="form__done" data-form-done hidden tabindex="-1" role="status">Ačiū. Tai demonstracinė versija, todėl žinutė neišsiųsta.</p>
+    </form>
+  </div>
+</section>
+{% endblock %}

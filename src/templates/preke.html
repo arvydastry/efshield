@@ -1,0 +1,208 @@
+{% extends "base.html" %}
+{% block title %}{{ product.name }} | EFshield{% endblock %}
+{% block description %}{{ product.name }}: {{ product.for[0] | lower }}{{ product.for[1:] }}. {{ product.price | price }}, nemokamas pristatymas visoje Lietuvoje.{% endblock %}
+{% block body_class %}pdp-page{% endblock %}
+{% block preload %}<link rel="preload" as="image" href="assets/img/products/{{ product.img }}-juodas.webp">{% endblock %}
+{% block css %}<link rel="stylesheet" href="assets/css/pdp.css">{% endblock %}
+{% block js %}
+<script src="assets/js/field.js" defer></script>
+<script src="assets/js/pdp.js" defer></script>
+{% endblock %}
+
+{% block main %}
+{% import "partials/blocks.html" as blocks %}
+
+<!-- XStore Single Product Builder: „Breadcrumb“ (woocommerce-etheme_breadcrumb) -->
+<nav class="crumbs wrap" aria-label="Kelias iki puslapio">
+  <ol>
+    <li><a href="index.html">Pradžia</a></li>
+    <li><a href="index.html#produktai">Parduotuvė</a></li>
+    <li aria-current="page">{{ product.name }}</li>
+  </ol>
+</nav>
+
+<!-- XStore Single Product Builder: „Product Images“ (miniatiūros apačioje, zoom, lightbox, „Product with video“) + „Title“, „Price“, „Short Description“, „Add to Cart“ su Variation swatches.
+     Fonas pagal spalvą ir bangų žiedai už prekės – child-theme CSS/JS. -->
+<section class="pdp" data-pdp data-product="{{ product.id }}" data-color="juodas">
+  <div class="wrap pdp__grid">
+    <div class="gallery" data-gallery>
+      <div class="gallery__main" data-gallery-main>
+        <svg class="gallery__waves" viewBox="-100 -100 200 200" aria-hidden="true" data-speed="-7">
+          <circle r="30"/><circle r="46"/><circle r="62"/><circle r="78"/><circle r="94"/>
+        </svg>
+        {% for g in product.gallery %}
+        {% if g.type == 'product' %}
+        <figure class="gslide gslide--product{% if loop.first %} is-on{% endif %}" data-slide="{{ loop.index0 }}" data-color="{{ g.color }}">
+          <img src="assets/img/products/{{ product.img }}-{{ g.color }}.webp" width="{{ product.sizes[g.color][0] }}" height="{{ product.sizes[g.color][1] }}" alt="{{ g.alt }}"{% if not loop.first %} loading="lazy"{% endif %} decoding="async" data-zoom-img>
+        </figure>
+        {% else %}
+        <figure class="gslide gslide--photo{% if g.h > g.w %} gslide--tall{% endif %}" data-slide="{{ loop.index0 }}">
+          <img src="{{ g.src }}" width="{{ g.w }}" height="{{ g.h }}" alt="{{ g.alt }}" loading="lazy" decoding="async" data-zoom-img>
+        </figure>
+        {% endif %}
+        {% endfor %}
+        <button class="gallery__zoom" type="button" data-gallery-open>{{ icon('magnifying-glass-plus') }}<span class="sr">Padidinti nuotrauką</span></button>
+      </div>
+      <ul class="gallery__thumbs">
+        {% for g in product.gallery %}
+        <li>
+          <button type="button" class="gthumb{% if loop.first %} is-on{% endif %}{% if g.type == 'product' %} gthumb--product gthumb--{{ g.color }}{% elif g.h > g.w %} gthumb--tall{% endif %}" data-thumb="{{ loop.index0 }}"{% if g.type == 'product' %} data-color="{{ g.color }}"{% endif %} aria-label="Rodyti nuotrauką: {{ g.alt }}" aria-pressed="{{ 'true' if loop.first else 'false' }}">
+            {% if g.type == 'product' %}
+            <img src="assets/img/products/{{ product.img }}-{{ g.color }}-sm.webp" width="{{ product.sizes[g.color][0] }}" height="{{ product.sizes[g.color][1] }}" alt="" loading="lazy" decoding="async">
+            {% else %}
+            <img src="{{ g.thumb }}" width="{{ g.w }}" height="{{ g.h }}" alt="" loading="lazy" decoding="async">
+            {% endif %}
+          </button>
+        </li>
+        {% endfor %}
+        <li>
+          <button type="button" class="gthumb gthumb--video" data-video="{{ site.videos.bandymas }}" data-video-title="Bandymas su telefono skydu ir matuokliu" aria-label="Žiūrėti bandymo vaizdo įrašą">
+            <svg class="gthumb__rosette" aria-hidden="true"><use href="#rosette"/></svg>
+            <span class="gthumb__play">{{ icon('play-fill') }}</span>
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    <div class="summary">
+      <h1 class="summary__title">{{ blocks.split(product.name) }}</h1>
+      <p class="summary__for">{{ product.for }}</p>
+      <p class="price price--xl"><span data-price>{{ product.price | price }}</span> <small>su PVM</small></p>
+      <p class="summary__short">{{ product.short }}</p>
+
+      <form class="buy" data-buy>
+        <fieldset class="swatches swatches--lg">
+          <legend>Spalva: <strong data-color-name>juoda</strong></legend>
+          {% for c in site.colors %}
+          <label class="swatch swatch--{{ c.id }}">
+            <input type="radio" name="spalva" value="{{ c.id }}"{% if loop.first %} checked{% endif %}>
+            <span class="swatch__dot" aria-hidden="true"></span>
+            <span class="swatch__label">{{ c.label }}</span>
+          </label>
+          {% endfor %}
+        </fieldset>
+        <div class="buy__row">
+          <div class="qty" data-qty>
+            <button type="button" data-qty-dec aria-label="Mažinti kiekį">{{ icon('minus') }}</button>
+            <label class="sr" for="kiekis">Kiekis</label>
+            <input id="kiekis" type="number" inputmode="numeric" min="1" max="10" value="1" data-qty-input>
+            <button type="button" data-qty-inc aria-label="Didinti kiekį">{{ icon('plus') }}</button>
+          </div>
+          <button class="btn btn--ink btn--wide" type="submit" data-buy-btn>Į krepšelį</button>
+        </div>
+      </form>
+
+      <!-- XStore: „Icon List“ (etheme_icon_list) -->
+      <ul class="assure">
+        <li>{{ icon('truck') }}<span><strong>Nemokamas pristatymas</strong> visoje Lietuvoje</span></li>
+        <li>{{ icon('arrow-u-up-left') }}<span><strong>Grąžinimas per 14 darbo dienų</strong> nuo pristatymo</span></li>
+        <li>{{ icon('credit-card') }}<span><strong>Atsiskaitymas</strong>: el. bankininkystė per „Paysera“ arba banko pavedimas</span></li>
+      </ul>
+      <p class="summary__help">Turite klausimų? <a href="tel:{{ site.phone_href }}">{{ site.phone }}</a> arba <a href="mailto:{{ site.email }}">{{ site.email }}</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ KAIP NAUDOTI · tamsi scena. XStore: Elementor Container Single Product Builder šablone + Text Editor (žingsniai) + HTML valdiklis (field.js).
+     Žingsniai ir vietų pavadinimai skiriasi pagal prekę: du šablonai su „Display Conditions“ arba prekės laukai. ============ -->
+<section class="stage stage--pdp" id="kaip-naudoti" data-stage aria-labelledby="naudoti-h">
+  <div class="stage__panel" data-stage-panel>
+    <svg class="stage__rosette" aria-hidden="true" data-stage-rosette><use href="#rosette-line"/></svg>
+    <div class="wrap stage__grid">
+      <div class="stage__copy">
+        <h2 id="naudoti-h" data-split>{{ blocks.split(product.steps_title) }}</h2>
+        <ol class="steps">
+          {% for s in product.steps %}
+          <li>
+            <h3>{{ s.t }}</h3>
+            <p>{{ s.d }}</p>
+          </li>
+          {% endfor %}
+        </ol>
+      </div>
+      {{ blocks.field(product.field) }}
+    </div>
+    {{ blocks.meter(site) }}
+  </div>
+</section>
+
+<!-- XStore Single Product Builder: „Tabs“ (woocommerce-product-etheme_tabs), tipas „accordion“ visuose ekranuose; papildomi skirtukai „Pristatymas ir grąžinimas“ ir „Dažni klausimai“, WooCommerce atsiliepimų skirtukas. Kairėje: Heading + XStore „Icon List“. -->
+<section class="details" aria-label="Prekės informacija">
+  <div class="wrap details__grid">
+    <div class="details__aside">
+      <h2 data-split>{{ blocks.split('Viskas apie ' ~ product.name_acc) }}</h2>
+      <ul class="keyfacts">
+        {% for k in product.keyfacts %}
+        <li>{{ icon('check') }}<span>{{ k }}</span></li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="acc" data-acc>
+      <div class="acc__item is-open">
+        <h3><button type="button" aria-expanded="true" aria-controls="acc-1" id="acc-b-1">Aprašymas{{ icon('plus') }}</button></h3>
+        <div class="acc__panel" id="acc-1" role="region" aria-labelledby="acc-b-1"><div>
+          {% for d in product.description %}<p>{{ d }}</p>{% endfor %}
+        </div></div>
+      </div>
+      <div class="acc__item">
+        <h3><button type="button" aria-expanded="false" aria-controls="acc-2" id="acc-b-2">Pristatymas ir grąžinimas{{ icon('plus') }}</button></h3>
+        <div class="acc__panel" id="acc-2" role="region" aria-labelledby="acc-b-2"><div>
+          <p>Pristatymas visoje Lietuvoje nemokamas.</p>
+          <p>Prekę galite grąžinti per 14 darbo dienų nuo pristatymo dienos. Ji turi būti nenaudota, nesugadinta, originalioje tvarkingoje pakuotėje ir tos pačios komplektacijos, kokią gavote. Kartu pateikite įsigijimo dokumentą. Apie grąžinimą praneškite el. paštu <a href="mailto:{{ site.email }}">{{ site.email }}</a>, nurodydami prekės pavadinimą ir užsakymo numerį.</p>
+          <p>Kainos nurodytos eurais, su PVM. Atsiskaityti galima per el. bankininkystę („Paysera“) arba banko pavedimu.</p>
+        </div></div>
+      </div>
+      <div class="acc__item">
+        <h3><button type="button" aria-expanded="false" aria-controls="acc-3" id="acc-b-3">Dažni klausimai{{ icon('plus') }}</button></h3>
+        <div class="acc__panel" id="acc-3" role="region" aria-labelledby="acc-b-3"><div>
+          <dl class="faq">
+            {% for f in faq %}
+            <dt>{{ f.q }}</dt>
+            <dd>{{ f.a }}</dd>
+            {% endfor %}
+          </dl>
+        </div></div>
+      </div>
+      <div class="acc__item">
+        <h3><button type="button" aria-expanded="false" aria-controls="acc-4" id="acc-b-4">Atsiliepimai (0){{ icon('plus') }}</button></h3>
+        <div class="acc__panel" id="acc-4" role="region" aria-labelledby="acc-b-4"><div>
+          <p>Atsiliepimų dar nėra. Įsigijote šį skydą? Pasidalykite įspūdžiais.</p>
+          <p><a class="btn btn--line" href="#" data-demo="Atsiliepimo forma">Rašyti atsiliepimą</a></p>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- XStore: atskiras blokas su dviem „Add To Cart“ valdikliais. Temos „Bought Together“ veikia tik paprastoms prekėms, o skydai turi spalvos variantus. -->
+<section class="pair" aria-labelledby="pair-h">
+  <div class="wrap">
+    <div class="pair__grid">
+      <div class="pair__copy">
+        <h2 id="pair-h" data-split>{{ blocks.split('Telefonui turime atskirą skydą' if product.id == 'wifi' else 'Maršrutizatoriui turime atskirą skydą') }}</h2>
+        <p>{{ other.card }}</p>
+        <div class="pair__sum">
+          <p><span>{{ product.name }} ir {{ other.name_mid }}</span><strong>{{ (product.price + other.price) | price }}</strong></p>
+          <button class="btn btn--ink" type="button" data-add-both="{{ product.id }},{{ other.id }}">Dėti abu į krepšelį</button>
+        </div>
+      </div>
+      <a class="pair__card" href="{{ other.slug }}.html" data-tilt data-speed="6" data-speed-min="1001">
+        <span class="pair__stage">
+          <img src="assets/img/products/{{ other.img }}-juodas.webp" srcset="assets/img/products/{{ other.img }}-juodas-sm.webp 640w, assets/img/products/{{ other.img }}-juodas.webp 1400w" sizes="(min-width: 1001px) 36vw, 90vw" width="{{ other.sizes.juodas[0] }}" height="{{ other.sizes.juodas[1] }}" alt="Juodas {{ other.name_mid }}" loading="lazy" decoding="async" data-tilt-layer>
+        </span>
+        <span class="pair__meta"><strong>{{ other.name }}</strong> <span>{{ other.price | price }}</span>{{ icon('arrow-right') }}</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- XStore Single Product Builder: „Sticky Cart“ (woocommerce-product-etheme_sticky_cart). Demo juosta rodo pasirinktą spalvą ir pasislepia prie poraštės. -->
+<div class="stickybuy" data-stickybuy aria-hidden="true">
+  <div class="wrap stickybuy__in">
+    <img src="assets/img/products/{{ product.img }}-juodas-sm.webp" width="{{ product.sizes.juodas[0] }}" height="{{ product.sizes.juodas[1] }}" alt="" data-sticky-img>
+    <p class="stickybuy__name"><strong>{{ product.name }}</strong><span data-sticky-color>Juoda</span></p>
+    <p class="price">{{ product.price | price }}</p>
+    <button class="btn btn--ink" type="button" data-sticky-add tabindex="-1">Į krepšelį</button>
+  </div>
+</div>
+{% endblock %}

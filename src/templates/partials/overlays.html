@@ -1,0 +1,52 @@
+<!-- XStore: Header Builder „Mobile Menu“ valdiklis (off-canvas); demo išvaizda (juodas skydelis per visą ekraną) – valdiklio stilius + CSS -->
+<div class="mnav" id="mobilus-meniu" role="dialog" aria-modal="true" aria-label="Meniu" hidden>
+  <div class="mnav__head">
+    <img src="assets/img/brand/logo-white.png" width="583" height="120" alt="efshield.com" loading="lazy">
+    <button class="tool" type="button" data-menu-close>{{ icon('x') }}<span class="sr">Uždaryti meniu</span></button>
+  </div>
+  <ul class="mnav__list">
+    {% for n in site.nav %}
+    <li><a href="{{ n.href if home else n.href.replace('index.html', '') }}" data-menu-close>{{ n.label }}</a></li>
+    {% endfor %}
+  </ul>
+  <div class="mnav__foot">
+    <a href="tel:{{ site.phone_href }}">{{ site.phone }}</a>
+    <a href="mailto:{{ site.email }}">{{ site.email }}</a>
+    <p>{{ site.shipping_note }}</p>
+  </div>
+</div>
+
+<!-- XStore: Header Builder „Cart“ valdiklis, off-canvas, „automatically_open_canvas“. Demo krepšelis yra maketas (localStorage) ir į temą neperkeliamas;
+     eilutė „Pristatymas Lietuvoje“, vienas mygtukas „Apmokėti“ ir tuščio krepšelio vaizdas – mini-cart hooks + CSS. -->
+<div class="scrim" data-scrim hidden></div>
+<aside class="drawer" id="krepselis" role="dialog" aria-modal="true" aria-labelledby="krepselis-pav" hidden>
+  <div class="drawer__head">
+    <h2 id="krepselis-pav">Krepšelis</h2>
+    <button class="tool" type="button" data-cart-close>{{ icon('x') }}<span class="sr">Uždaryti krepšelį</span></button>
+  </div>
+  <div class="drawer__body" data-cart-body>
+    <div class="drawer__empty" data-cart-empty>
+      <svg class="drawer__rosette" aria-hidden="true"><use href="#rosette"/></svg>
+      <p>Krepšelis tuščias.</p>
+      <a class="btn btn--ink" href="{{ home }}#produktai" data-cart-close>Rinktis skydą</a>
+    </div>
+    <ul class="drawer__items" data-cart-items></ul>
+  </div>
+  <div class="drawer__foot" data-cart-foot hidden>
+    <dl class="drawer__sum">
+      <div><dt>Tarpinė suma</dt><dd data-cart-subtotal aria-live="polite">0,00 €</dd></div>
+      <div><dt>Pristatymas Lietuvoje</dt><dd>Nemokamas</dd></div>
+    </dl>
+    <a class="btn btn--ink btn--wide" href="#" data-demo="Apmokėjimo puslapis">Apmokėti <span data-cart-total></span></a>
+    <p class="drawer__note">Kainos su PVM. Atsiskaitymas: el. bankininkystė per „Paysera“ arba banko pavedimas.</p>
+  </div>
+</aside>
+
+<!-- XStore: „Modal Popup“ (etheme_modal_popup) su Elementor „Video“ valdikliu (Privacy Mode) arba „Video“ valdiklio Lightbox -->
+<div class="lightbox" data-lightbox role="dialog" aria-modal="true" aria-label="Vaizdo įrašas" hidden>
+  <button class="tool lightbox__close" type="button" data-lightbox-close>{{ icon('x') }}<span class="sr" data-lightbox-close-label>Uždaryti</span></button>
+  <div class="lightbox__frame" data-lightbox-frame></div>
+  <span class="sr" tabindex="0" data-lightbox-end></span>
+</div>
+
+<div class="toast" data-toast role="status" aria-live="polite" hidden></div>

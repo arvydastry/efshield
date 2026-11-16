@@ -1,0 +1,44 @@
+<!-- XStore: Footer Builder (Elementor): „Site Logo“, Text Editor, „Menu List“ (et_menu_list), XStore „Icon List“, „Follow“ (etheme-follow) -->
+<footer class="footer">
+  <div class="wrap footer__grid">
+    <div class="footer__brand">
+      <a class="logo" href="index.html" aria-label="EFshield, pradžios puslapis">
+        <img src="assets/img/brand/logo-ink.png" width="583" height="120" alt="efshield.com" loading="lazy">
+      </a>
+      <p>Skydai, kurie sumažina telefono ir „Wi-Fi“ maršrutizatoriaus skleidžiamų bangų stiprumą į pasirinktą pusę.</p>
+    </div>
+    <nav class="footer__col" aria-label="Parduotuvė">
+      <h2>Parduotuvė</h2>
+      <ul>
+        {% for p in site.products %}
+        <li><a href="{{ p.slug }}.html">{{ p.name }}</a></li>
+        {% endfor %}
+        <li><a href="#" data-cart-open>Krepšelis</a></li>
+      </ul>
+    </nav>
+    <nav class="footer__col" aria-label="Informacija">
+      <h2>Informacija</h2>
+      <ul>
+        <li><a href="{{ home }}#kaip-veikia">Kaip tai veikia</a></li>
+        <li><a href="{{ home }}#ideja">Apie idėją</a></li>
+        <li><a href="#" data-demo="Pirkimo ir grąžinimo taisyklės">Pirkimo ir grąžinimo taisyklės</a></li>
+        <li><a href="#" data-demo="Privatumo politika">Privatumo politika</a></li>
+      </ul>
+    </nav>
+    <div class="footer__col">
+      <h2>Kontaktai</h2>
+      <ul>
+        <li><a href="tel:{{ site.phone_href }}">{{ site.phone }}</a></li>
+        <li><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
+        <li class="footer__social">
+          <a href="{{ site.facebook }}" target="_blank" rel="noopener" aria-label="EFshield „Facebook“ puslapis">{{ icon('facebook-logo') }}</a>
+          <a href="{{ site.youtube }}" target="_blank" rel="noopener" aria-label="EFshield „YouTube“ kanalas">{{ icon('youtube-logo') }}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap footer__base">
+    <p>© 2026 EFshield. Visos teisės saugomos.</p>
+    <p>Atsiskaitymas: el. bankininkystė per „Paysera“ arba banko pavedimas. Kainos nurodytos su PVM.</p>
+  </div>
+</footer>
