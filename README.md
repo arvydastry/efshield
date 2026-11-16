@@ -8,11 +8,15 @@ Puslapiai pažymėti `noindex, nofollow`. Prieš tikrą paleidimą žymą išimt
 
 ## Peržiūra
 
+Gyva versija: https://arvydastry.github.io/efshield/ (GitHub Pages iš šakos `main`; atsinaujina po kiekvieno įkėlimo į saugyklą).
+
+Vietoje:
+
 ```bash
 python3 serve.py
 ```
 
-Tada naršyklėje atidaryti http://localhost:8190 (`.claude/launch.json` konfigūracija `efshield-demo` daro tą patį). Puslapiai atsidaro ir tiesiai iš failų, tik „YouTube“ vaizdo įrašas tada gali nepasileisti.
+Tada naršyklėje atidaryti http://localhost:8190. Puslapiai atsidaro ir tiesiai iš failų, tik „YouTube“ vaizdo įrašas tada gali nepasileisti.
 
 - `?static=1` adreso gale išjungia visą judesį (patogu ekrano nuotraukoms). Tas pats įvyksta, kai lankytojo sistemoje įjungta „mažiau judesio“.
 - Be „JavaScript“ puslapiai lieka perskaitomi: visas tekstas matomas, informacijos skiltys išskleistos, interaktyvi schema paslepiama.
